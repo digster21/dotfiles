@@ -2,17 +2,13 @@
 
 set -e
 
-
-
-
-
 USER_HOME="$HOME"
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "$DOTFILES_DIR"
 
-# List dotfiles
-dotfiles=(".bashrc" ".vimrc" ".gitconfig" ".DNE")
+# List dotfile
+dotfiles=(".bashrc" ".vimrc" ".gitconfig" ".tmux.conf")
 
 for file in "${dotfiles[@]}"; do
     target="$USER_HOME/$file"
@@ -26,7 +22,7 @@ for file in "${dotfiles[@]}"; do
 
     if [ -L "$target" ]; then 
         echo "Symlink already exists: $target -> $(readlink $target)"
-        contine
+        continue
     elif [ -e "$target" ]; then
         backup="$target.backup.$(date +%s)"
         echo "Backing up existing file: $target -> $backup"
