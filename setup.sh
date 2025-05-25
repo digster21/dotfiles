@@ -2,7 +2,6 @@
 
 set -e
 
-USER_HOME="$HOME"
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "$DOTFILES_DIR"
@@ -11,7 +10,7 @@ echo "$DOTFILES_DIR"
 dotfiles=(".bashrc" ".vimrc" ".gitconfig" ".tmux.conf")
 
 for file in "${dotfiles[@]}"; do
-    target="$USER_HOME/$file"
+    target="$HOME/$file"
     source="$DOTFILES_DIR/$file"
 
 
@@ -32,3 +31,30 @@ for file in "${dotfiles[@]}"; do
     ln -s "$source" "$target"
     echo "Linked: $target -> $source"
 done
+
+FONT="JetBrainsMono"
+FONTS_DIR="$HOME/.local/share/fonts"
+FONT_DIR="$FONTS_DIR/$FONT"
+FONT_ARCHIVE="$FONT.tar.xz"
+FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/$FONT_ARCHIVE"
+
+# Check if font already exists
+if [ ! -d "$FONT_DIR" ]; then
+    if ! command -v curl >/dev/null 2>&1; then
+        echo "curl not found. Installing..."
+        sudo apt update && sudo apt install -y curl
+    fi
+
+    curl -OL "$FONT_URL"
+
+    mkdir -p "$FONT_DIR"
+    tar -xf "$FONT_ARCHIVE" -C "$FONT_DIR"
+
+    # Reload font cache
+    fc-cache -fv
+
+    echo "$FONT Nerd Font installed successfully."
+else
+    echo "$FONT already installed at $FONT_DIR"
+fi
+
