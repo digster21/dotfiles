@@ -52,13 +52,8 @@ FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/$FONT
 
 # Check if font already exists
 if [ ! -d "$FONT_DIR" ]; then
-    if ! command -v curl >/dev/null 2>&1; then
-        sudo apt update && sudo apt install -y curl
-        echo "curl installed"
-    fi
-    
     # Install font
-    curl -OL "$FONT_URL"
+    wget "$FONT_URL"
 
     # Extract font
     mkdir -p "$FONT_DIR"
