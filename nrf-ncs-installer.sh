@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -e
 
 PRINT_HELP() {
@@ -10,25 +9,22 @@ PRINT_HELP() {
     echo ""
 }
 
-
 NCS_VERSION=""
 POSITIONAL_ARGS=()
 
 while [[ $# -gt 0 ]]; do
-    case $1 in 
+    case $1 in
         -i|--install)
             NCS_VERSION="$2"
-            shift
-            shift
+            shift 2
             ;;
         -h|--help)
             PRINT_HELP
             exit 0
             ;;
         -*|--*)
-            UNKNOWN="$2"
-            echo "Error: Unknown option: ${UNKNOWN}"
-            echo "try -h|--help"
+            echo "Error: Unknown option: $1"
+            echo "Try -h|--help"
             exit 1
             ;;
         *)
@@ -38,10 +34,15 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-set -- "${POSITIONAL_ARGS[@]}"
-if [[ -n $1 ]]; then
+if [[ ${#POSITIONAL_ARGS[@]} -ne 0 ]]; then
     echo "Error: Positional arguments not supported."
-    echo "try -h|--help"
+    echo "Try -h|--help"
+    exit 1
+fi
+
+if [[ -z "$NCS_VERSION" ]]; then
+    echo "Error: No NCS version specified."
+    echo "Try -h|--help"
     exit 1
 fi
 
@@ -49,13 +50,12 @@ NCS_ROOT="$HOME/ncs"
 NCS_DIR="${NCS_ROOT}/${NCS_VERSION}"
 VENV_DIR="${NCS_DIR}/venv"
 
-# Create install directoy
-echo "Create NCS directory"
-if [ -d "${NCS_DIR}" ]; then
-    echo "Error: NCS version ${NCS_VERSION} already exists at ${NCS_DIR}"
+if [ -d "$NCS_DIR" ]; then
+    echo "Error: NCS version $NCS_VERSION already exists at $NCS_DIR"
+    exit 1
 fi
 
-# Check is version is valid 
+# Validate version
 if ! grep -qx "$NCS_VERSION" <(bash ./nrf-ncs-list-versions.sh); then
     echo "Available versions:"
     bash ./nrf-ncs-list-versions.sh
@@ -63,20 +63,21 @@ if ! grep -qx "$NCS_VERSION" <(bash ./nrf-ncs-list-versions.sh); then
     exit 1
 fi
 
-mkdir -p "${NCS_DIR}"
+mkdir -p "$NCS_DIR"
 
-# Install Required dependencies
-echo "Install Zephyr + NCS dependencies"
-sudo apt install --no-install-recommends git cmake ninja-build gperf ccache dfu-util device-tree-compiler wget python3-dev python3-pip python3-setuptools python3-tk python3-wheel xz-utils file make gcc gcc-multilib g++-multilib libsdl2-dev libmagic1 \
-libffi-dev libssl-dev libncurses-dev
+echo "Installing dependencies..."
+sudo apt install --no-install-recommends -y \
+  git cmake ninja-build gperf ccache dfu-util device-tree-compiler wget \
+  python3-dev python3-pip python3-setuptools python3-tk python3-wheel \
+  xz-utils file make gcc gcc-multilib g++-multilib libsdl2-dev libmagic1 \
+  libffi-dev libssl-dev libncurses-dev python3.12-venv
 
-# Setup Python virtual environment
-sudo apt install python3.12-venv
+echo "Setting up Python virtual environment..."
 python3 -m venv "$VENV_DIR"
 source "$VENV_DIR/bin/activate"
 
-# Install west + nrfutil
-echo "Installing west and nrfutil"
+echo "Installing west and nrfutil..."
 pip install --upgrade pip
 pip install --upgrade west nrfutil
+
 
