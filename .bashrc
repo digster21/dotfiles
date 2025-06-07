@@ -115,4 +115,5 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-export PATH="$HOME/go/bin:$PATH"
+
+export PATH="/home/$USER/bin:$PATH"
