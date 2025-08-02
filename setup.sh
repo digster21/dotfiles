@@ -9,23 +9,23 @@ echo "Working in: $DOTFILES_DIR"
 ###############################################################################
 # Link config files
 ###############################################################################
+DOT_CONFIGS="$DOTFILES_DIR/slinks.txt"
 
-DOT_BASHRC=".bashrc"
-DOT_VIMRC=".vimrc"
-DOT_GITCONF=".gitconfig"
-DOT_TMUXCONF=".tmux.conf"
+if [ ! -f "$DOT_CONFIGS" ]; then 
+    echo "Error: $DOT_CONFIGS does not exist"
+    exit 1
+fi
 
-# List dotfile
-dotfiles=("$DOT_BASHRC" "$DOT_VIMRC" "$DOT_GITCONF" "$DOT_TMUXCONF")
+while IFS=: read -r src dest; do
 
-for file in "${dotfiles[@]}"; do
-    target="$HOME/$file"
-    source="$DOTFILES_DIR/$file"
+    [[ -z "$src" || "$src" =~ ^# ]] && continue
 
+    source="$DOTFILES_DIR/$src"
+    target=$(eval echo "$dest")
 
     if [ ! -e "$source" ]; then 
-	echo "Warning: $source does not exist in directory. Skipping."
-	continue
+        echo "Warning: $source does not exist in directory. Skipping."
+        continue
     fi
 
     if [ -L "$target" ]; then 
@@ -37,9 +37,10 @@ for file in "${dotfiles[@]}"; do
         mv "$target" "$backup"
     fi
 
+    mkdir -p "$(dirname "$target")"
     ln -s "$source" "$target"
     echo "Linked: $target -> $source"
-done
+done < "$DOT_CONFIGS"
 
 ###############################################################################
 # Install font
