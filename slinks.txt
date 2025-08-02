@@ -2,3 +2,4 @@
 .vimrc:$HOME/.vimrc
 .gitconfig:$HOME/.gitconfig
 .tmux.conf:$HOME/.tmux.conf
+nvim:$HOME/.config/nvim
