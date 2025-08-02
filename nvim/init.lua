@@ -7,10 +7,10 @@ vim.cmd("syntax on")
 
 
 local map = vim.keymap.set
-map("i", "hh", "<Esc>")
-map("v", "hh", "<Esc>")
-map("s", "hh", "<Esc>")
-map("o", "hh", "<Esc>")
+map("i", "jj", "<Esc>")
+map("v", "jj", "<Esc>")
+map("s", "jj", "<Esc>")
+map("o", "jj", "<Esc>")
 
 
 -- Visual mode copy to sys clipboard

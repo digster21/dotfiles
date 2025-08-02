@@ -10,7 +10,7 @@ syntax on " Enable syntax hilighting
 vnoremap <C-c> "*y :let @+=@*<CR>
 
 " Remap ESC for modes (insert, visual, select, vmotions)
-imap hh <Esc>
-vmap hh <Esc>
-smap hh <Esc>
-omap hh <Esc>
+imap jj <Esc>
+vmap jj <Esc>
+smap jj <Esc>
+omap jj <Esc>
