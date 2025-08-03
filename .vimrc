@@ -9,8 +9,7 @@ syntax on " Enable syntax hilighting
 " Copy to clipboard and primary selection register. Depends on gvim.
 vnoremap <C-c> "*y :let @+=@*<CR>
 
-" Remap ESC for modes (insert, visual, select, vmotions)
-imap jj <Esc>
-vmap jj <Esc>
-smap jj <Esc>
-omap jj <Esc>
+" Remap ESC for modes (insert, visual, select)
+inoremap jk <Esc>
+vnoremap jk <Esc>
+snoremap jk <Esc>
