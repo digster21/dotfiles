@@ -1,0 +1,6 @@
+alias gl='git log --oneline'
+alias gs='git status'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias ga='git add'
+alias gc='git commit'
