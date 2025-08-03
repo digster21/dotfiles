@@ -1,0 +1,13 @@
+# Ignore everything 
+*
+
+# Allowlist 
+!slinks.txt
+!setup.sh
+!.gitignore
+!.gitconfig
+!.bashrc
+!.vimrc
+!.tmux.conf
+!nvim/init.lua
+
