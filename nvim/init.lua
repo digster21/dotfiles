@@ -1,3 +1,5 @@
+vim.g.mapleader = " "
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then 
     vim.fn.system({
@@ -23,23 +25,19 @@ vim.opt.expandtab = true
 vim.opt.clipboard = "unnamedplus"
 vim.cmd("syntax on")
 
-local map = vim.keymap.set
-map("i", "jk", "<Esc>")
-map("v", "jk", "<Esc>")
-map("s", "jk", "<Esc>")
+-- Remap escape for insert, visual, and select mode
+vim.keymap.set("i", "jk", "<Esc>")
+vim.keymap.set("v", "jk", "<Esc>")
+vim.keymap.set("s", "jk", "<Esc>")
 
+-- Telescope mapping
+vim.keymap.set("n", "<leader>f", require("telescope.builtin").find_files)
 
--- Visual mode copy to sys clipboard
-map("v", "<C-c>", '"y :let @+=@*<CR>', { expr = true })
-
-
+-- Tree sitter config
 require("nvim-treesitter.configs").setup({
     highlight = { enabled = true },
     indent = { enabled = true },
 })
 
-
 vim.cmd.colorscheme("tokyonight")
-
-
 
