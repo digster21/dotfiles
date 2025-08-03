@@ -24,10 +24,9 @@ vim.opt.clipboard = "unnamedplus"
 vim.cmd("syntax on")
 
 local map = vim.keymap.set
-map("i", "jj", "<Esc>")
-map("v", "jj", "<Esc>")
-map("s", "jj", "<Esc>")
-map("o", "jj", "<Esc>")
+map("i", "jk", "<Esc>")
+map("v", "jk", "<Esc>")
+map("s", "jk", "<Esc>")
 
 
 -- Visual mode copy to sys clipboard
