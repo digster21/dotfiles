@@ -12,9 +12,16 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     "tpope/vim-sensible",
-    "nvim-lua/plenary.nvim",
-    "nvim-treesitter/nvim-treesitter",
-    "nvim-telescope/telescope.nvim",
+    {
+        "nvim-treesitter/nvim-treesitter", 
+        branch = 'master',
+        lazy = false, 
+        build = ":TSUpdate",
+    },
+    {
+        "nvim-telescope/telescope.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+    },
     "folke/tokyonight.nvim",
 })
 
@@ -31,7 +38,9 @@ vim.keymap.set("v", "jk", "<Esc>")
 vim.keymap.set("s", "jk", "<Esc>")
 
 -- Telescope mapping
-vim.keymap.set("n", "<leader>f", require("telescope.builtin").find_files)
+local telescope = require("telescope.builtin")
+vim.keymap.set("n", "<leader>fa", telescope.find_files, { desc = "Telescope find file by name (all)" })
+vim.keymap.set("n", "<leader>fg", telescope.git_files, { desc = "Telescope find file by name (git ls-files)" })
 
 -- Tree sitter config
 require("nvim-treesitter.configs").setup({
