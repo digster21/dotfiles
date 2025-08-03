@@ -1,4 +1,5 @@
 .bashrc:$HOME/.bashrc
+.bash_aliases:$HOME/.bash_aliases
 .vimrc:$HOME/.vimrc
 .gitconfig:$HOME/.gitconfig
 .tmux.conf:$HOME/.tmux.conf
