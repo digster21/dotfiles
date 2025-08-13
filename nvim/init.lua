@@ -1,5 +1,36 @@
+-- Local functions
+local function find_file(filename, dir, depth)
+    depth = depth or 4
+    local function search(d, current_depth)
+        if current_depth > depth then return nil end
+
+        local fd = vim.loop.fs_scandir(d)
+        if not fd then return nil end
+
+        while true do
+            local name, type = vim.loop.fs_scandir_next(fd)
+            if not name then break end
+
+            local path = d .. "/" .. name
+            if name == filename then
+                return path
+            elseif type == "directory" then
+                if vim.loop.fs_realpath(path) == path then
+                    local found = search(path, current_depth + 1)
+                    if found then return found end
+                end
+            end
+        end
+        return nil
+    end
+
+    return search(dir, 0)
+end
+
+-- Set <leader>
 vim.g.mapleader = " "
 
+-- Initialize LAZY plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then 
     vim.fn.system({
@@ -10,6 +41,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Install plugs with LAZY
 require("lazy").setup({
     "tpope/vim-sensible",
     {
@@ -38,6 +70,7 @@ require("lazy").setup({
     "folke/tokyonight.nvim",
 })
 
+-- Configure VIM settings 
 vim.opt.number = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -52,7 +85,7 @@ vim.keymap.set("s", "jk", "<Esc>", { noremap = true, silent = true })
 
 -- Telescope config
 local telescope = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", telescope.find_files, { desc = "Telescope find files by name", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>ff", telescope.git_files, { desc = "Telescope find files by name", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>fr", function() telescope.live_grep({ additional_args = function() return { "--hidden", "--no-ignore" } end, }) end, { desc = "Telescope find file by contents (ripgrep regex)", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>fs", function() telescope.live_grep({ additional_args = function() return { "--hidden", "--no-ignore", "--fixed-strings", "-i" } end, }) end, { desc = "Telescope find file by contents (ripgrep insensitive string)", noremap = true, silent = true })
 
@@ -94,8 +127,12 @@ cmp.setup({
 local lspconfig = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-lspconfig.clangd.setup({ capabiliries = capabilities })
-lspconfig.pyright.setup({ capabiliries = capabilities })
+local compile_commands = find_file("compile_commands.json", vim.loop.cwd(), 6)
+lspconfig.clangd.setup({
+    capabilities = capabilities,
+    cmd = (compile_commands and { "clangd", "--compile-commands-dir=" .. compile_commands } or nil),
+})
+lspconfig.pyright.setup({ capabilities = capabilities })
 
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Language Server show diagnostic message", noremap = true, silent = true })
 
