@@ -32,6 +32,9 @@ require("lazy").setup({
             lazy = false,
         },
     },
+    "neovim/nvim-lspconfig",
+    "hrsh7th/nvim-cmp",
+    "hrsh7th/cmp-nvim-lsp",
     "folke/tokyonight.nvim",
 })
 
@@ -50,8 +53,8 @@ vim.keymap.set("s", "jk", "<Esc>", { noremap = true, silent = true })
 -- Telescope config
 local telescope = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", telescope.git_files, { desc = "Telescope find file by name (git ls-files)", noremap = true, silent = true }) 
-vim.keymap.set("n", "<leader>fr", function() telescope.live_grep{ additional_args = function() return { "--hidden", "--no-ignore" } end, } end, { desc = "Telescope find file by contents (ripgrep regex)", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>fs", function() telescope.live_grep{ additional_args = function() return { "--hidden", "--no-ignore", "--fixed-strings", "-i" } end, } end, { desc = "Telescope find file by contents (ripgrep insensitive string)", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fr", function() telescope.live_grep({ additional_args = function() return { "--hidden", "--no-ignore" } end, }) end, { desc = "Telescope find file by contents (ripgrep regex)", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fs", function() telescope.live_grep({ additional_args = function() return { "--hidden", "--no-ignore", "--fixed-strings", "-i" } end, }) end, { desc = "Telescope find file by contents (ripgrep insensitive string)", noremap = true, silent = true })
 -- NeoTree config
 require("neo-tree").setup({
     close_if_last_window = true,
@@ -72,5 +75,29 @@ require("nvim-treesitter.configs").setup({
     indent = { enabled = true },
 })
 
+-- IntelliSense config (cmp)
+local cmp = require("cmp")
+cmp.setup({
+    mapping = cmp.mapping.preset.insert({
+        ["<C-n>"] = cmp.mapping.select_next_item(),
+        ["<C-p>"] = cmp.mapping.select_prev_item(),
+        ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<C-Space>"] = cmp.mapping.complete(),
+    }),
+    sources = {
+        {name = "nvim_lsp" },
+    },
+})
+
+-- Language Servers (lsp)
+local lspconfig = require("lspconfig")
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+lspconfig.clangd.setup({ capabiliries = capabilities })
+lspconfig.pyright.setup({ capabiliries = capabilities })
+
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Language Server show diagnostic message", noremap = true, silent = true })
+
+-- Theme
 vim.cmd.colorscheme("tokyonight")
 
