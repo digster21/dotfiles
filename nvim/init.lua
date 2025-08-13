@@ -49,8 +49,9 @@ vim.keymap.set("s", "jk", "<Esc>", { noremap = true, silent = true })
 
 -- Telescope config
 local telescope = require("telescope.builtin")
-vim.keymap.set("n", "<leader>f", telescope.git_files, { desc = "Telescope find file by name (git ls-files)", noremap = true, silent = true }) 
-
+vim.keymap.set("n", "<leader>ff", telescope.git_files, { desc = "Telescope find file by name (git ls-files)", noremap = true, silent = true }) 
+vim.keymap.set("n", "<leader>fr", function() telescope.live_grep{ additional_args = function() return { "--hidden", "--no-ignore" } end, } end, { desc = "Telescope find file by contents (ripgrep regex)", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fs", function() telescope.live_grep{ additional_args = function() return { "--hidden", "--no-ignore", "--fixed-strings", "-i" } end, } end, { desc = "Telescope find file by contents (ripgrep insensitive string)", noremap = true, silent = true })
 -- NeoTree config
 require("neo-tree").setup({
     close_if_last_window = true,
@@ -62,8 +63,8 @@ require("neo-tree").setup({
         },
     },
 })
-vim.keymap.set("n", "<leader>t", ":Neotree filesystem toggle<CR>", { desc = "Neotree Toggle filesystem tree", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>g", ":Neotree git_status toggle<CR>", { desc = "Neotree Toggle git status tree", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>tt", ":Neotree filesystem toggle<CR>", { desc = "Neotree Toggle filesystem tree", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>tg", ":Neotree git_status toggle<CR>", { desc = "Neotree Toggle git status tree", noremap = true, silent = true })
 
 -- Treesitter config
 require("nvim-treesitter.configs").setup({
