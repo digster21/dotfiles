@@ -67,6 +67,19 @@ require("lazy").setup({
     "neovim/nvim-lspconfig",
     "hrsh7th/nvim-cmp",
     "hrsh7th/cmp-nvim-lsp",
+    {
+        "stevearc/conform.nvim",
+        opts = {
+            formatters_by_ft = {
+                c = { "clang-format" },
+                cpp = { "clang-format" },
+            },
+            format_on_save = {
+                timeout_ms = 500, 
+                lsp_fallback = true,
+            },
+        },
+    },
     "folke/tokyonight.nvim",
 })
 
@@ -82,6 +95,9 @@ vim.cmd("syntax on")
 vim.keymap.set("i", "jk", "<Esc>", { noremap = true, silent = true })
 vim.keymap.set("v", "jk", "<Esc>", { noremap = true, silent = true })
 vim.keymap.set("s", "jk", "<Esc>", { noremap = true, silent = true })
+
+-- Map keybinding for formatting
+vim.keymap.set("n", "<leader>F", function() require("conform").format({ async = true }) end, { desc = "Run formatter for current buffer", noremap = true, silent = true })
 
 -- Telescope config
 local telescope = require("telescope.builtin")
