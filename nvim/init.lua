@@ -126,15 +126,16 @@ cmp.setup({
 -- Language Servers (lsp)
 local lspconfig = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local cmd = { "clangd", "--clang-tidy" }
 
 local compile_commands = find_file("compile_commands.json", vim.loop.cwd(), 6)
+if compile_commands then
+    table.insert(cmd, "--compile-commands-dir=" .. vim.fn.fnamemodify(compile_commands, ":h"))
+end
+
 lspconfig.clangd.setup({
     capabilities = capabilities,
-    cmd = {
-        "clangd",
-        "--clang-tidy",
-        compile_commands and ("--compile-commands-dir=" .. vim.fn.fnamemodify(compile_commands, ":h")) or nil,
-    }
+    cmd = cmd,
 })
 lspconfig.pyright.setup({ capabilities = capabilities })
 
