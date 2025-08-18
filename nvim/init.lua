@@ -91,7 +91,6 @@ vim.keymap.set("n", "<leader>fs", function() telescope.live_grep({ additional_ar
 
 -- NeoTree config
 require("neo-tree").setup({
-    close_if_last_window = true,
     filesystem = {
         filtered_items = {
             visible = true,
@@ -100,8 +99,9 @@ require("neo-tree").setup({
         },
     },
 })
-vim.keymap.set("n", "<leader>tt", ":Neotree filesystem toggle<CR>", { desc = "Neotree Toggle filesystem tree", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>tg", ":Neotree git_status toggle<CR>", { desc = "Neotree Toggle git status tree", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>tt", ":Neotree filesystem focus<CR>", { desc = "Neotree focus filesystem tree", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>tg", ":Neotree git_status focus<CR>", { desc = "Neotree focus git status tree", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>tx", ":Neotree close<CR>", { desc = "Neotree close", noremap = true, silent = true })
 
 -- Treesitter config
 require("nvim-treesitter.configs").setup({
@@ -130,7 +130,11 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local compile_commands = find_file("compile_commands.json", vim.loop.cwd(), 6)
 lspconfig.clangd.setup({
     capabilities = capabilities,
-    cmd = (compile_commands and { "clangd", "--compile-commands-dir=" .. compile_commands } or nil),
+    cmd = {
+        "clangd",
+        "--clang-tidy",
+        compile_commands and ("--compile-commands-dir=" .. vim.fn.fnamemodify(compile_commands, ":h")) or nil,
+    }
 })
 lspconfig.pyright.setup({ capabilities = capabilities })
 
