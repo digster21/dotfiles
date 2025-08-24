@@ -97,16 +97,15 @@ vim.keymap.set("v", "jk", "<Esc>", { noremap = true, silent = true })
 vim.keymap.set("s", "jk", "<Esc>", { noremap = true, silent = true })
 
 -- Map keybinding for formatting
-vim.keymap.set("n", "<leader>h", function() require("conform").format({ async = true }) end, { desc = "Run formatter for current buffer", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>F", function() require("conform").format({ async = true }) end, { desc = "Run formatter for current buffer", noremap = true, silent = true })
 
 -- Telescope config
 local telescope = require("telescope.builtin")
-vim.keymap.set("n", "<leader>fF", telescope.find_files, { desc = "Telescope find files by name", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>ff", telescope.git_files, { desc = "Telescope find files by name (git)", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>ff", telescope.find_files, { desc = "Telescope find files by name", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fg", telescope.git_files, { desc = "Telescope find files by name (git)", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>fr", function() telescope.live_grep({ additional_args = function() return { "--hidden", "--no-ignore" } end, }) end, { desc = "Telescope find file by contents (ripgrep regex)", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>fs", telescope.grep_string, { desc = "Telescope find file using stirng under cursor", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>fS", function() telescope.live_grep({ additional_args = function() return { "--hidden", "--no-ignore", "--fixed-strings", "-i" } end, }) end, { desc = "Telescope find file by contents (ripgrep insensitive string)", noremap = true, silent = true })
-
+vim.keymap.set("n", "<leader>fs", function() telescope.live_grep({ additional_args = function() return { "--hidden", "--no-ignore", "--fixed-strings" } end, }) end, { desc = "Telescope find file by contents (ripgrep string)", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fw", telescope.grep_string, { desc = "Telescope find file using stirng under cursor", noremap = true, silent = true })
 -- NeoTree config
 require("neo-tree").setup({
     filesystem = {
@@ -131,8 +130,8 @@ require("nvim-treesitter.configs").setup({
 local cmp = require("cmp")
 cmp.setup({
     mapping = cmp.mapping.preset.insert({
-        ["<C-n>"] = cmp.mapping.select_next_item(),
-        ["<C-p>"] = cmp.mapping.select_prev_item(),
+        ["<C-j>"] = cmp.mapping.select_next_item(),
+        ["<C-k>"] = cmp.mapping.select_prev_item(),
         ["<TAB>"] = cmp.mapping.confirm({ select = true }),
         ["<C-Space>"] = cmp.mapping.complete(),
     }),
