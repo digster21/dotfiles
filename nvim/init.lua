@@ -108,6 +108,9 @@ vim.keymap.set("n", "<leader>fs", function() telescope.live_grep({ additional_ar
 vim.keymap.set("n", "<leader>fw", telescope.grep_string, { desc = "Telescope find file using stirng under cursor", noremap = true, silent = true })
 -- NeoTree config
 require("neo-tree").setup({
+    window = {
+        position = "float",
+    },
     filesystem = {
         filtered_items = {
             visible = true,
