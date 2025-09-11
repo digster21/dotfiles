@@ -1,4 +1,4 @@
-alias gl='git log --oneline'
+alias gl='git log --oneline -20'
 alias gs='git status'
 alias gd='git diff'
 alias gds='git diff --staged'
