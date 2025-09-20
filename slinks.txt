@@ -2,5 +2,6 @@
 .bash_aliases:$HOME/.bash_aliases
 .vimrc:$HOME/.vimrc
 .gitconfig:$HOME/.gitconfig
-.tmux.conf:$HOME/.tmux.conf
+tmux/tmux.conf:$HOME/.config/tmux/tmux.conf
+tmux/custom_modules:$HOME/.config/tmux/custom_modules
 nvim:$HOME/.config/nvim
