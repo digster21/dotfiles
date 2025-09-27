@@ -3,5 +3,4 @@
 .vimrc:$HOME/.vimrc
 .gitconfig:$HOME/.gitconfig
 tmux/tmux.conf:$HOME/.config/tmux/tmux.conf
-tmux/custom_modules:$HOME/.config/tmux/custom_modules
 nvim:$HOME/.config/nvim
