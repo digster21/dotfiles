@@ -9,7 +9,7 @@
 !.bashrc
 !.bash_aliases
 !.vimrc
+!nvim
 !nvim/init.lua
 !tmux
-!tmux/**
-
+!tmux/tmux.conf
