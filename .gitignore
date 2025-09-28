@@ -13,3 +13,4 @@
 !nvim/init.lua
 !tmux
 !tmux/tmux.conf
+!.zshrc
