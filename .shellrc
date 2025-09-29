@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+
+[ -n "$SHELLRC_GUARD" ] && return
+SHELLRC_GUARD=1
+
+# Add Editor preference
+if command -v nvim >/dev/null 2>&1; then
+    EDITOR=nvim
+elif command -v vim >/dev/null 2>&1; then
+    EDITOR=vim
+else
+    EDITOR=vi
+fi
+export EDITOR
+
+# Add Pager preference
+if command -v less >/dev/null 2>&1; then
+    PAGER=less
+else
+    PAGER=more
+fi
+export PAGER
+
+# Configure history
+HISTSIZE=3000
+HISTFILESIZE=3000
+HISTCONTROL=ignoreboth
+
+if [ -n "$BASH_VERSION" ]; then
+    shopt -s histappend
+fi
+
+if [ -n "$ZSH_VERSION" ]; then
+    setopt APPEND_HISTORY
+fi
+
+# Extend Path
+export PATH="/home/$USER/bin:$PATH"

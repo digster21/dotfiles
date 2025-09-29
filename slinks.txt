@@ -5,3 +5,4 @@
 tmux/tmux.conf:$HOME/.config/tmux/tmux.conf
 nvim:$HOME/.config/nvim
 .zshrc:$HOME/.zshrc
+.shellrc:$HOME/.shellrc
