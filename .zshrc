@@ -100,4 +100,9 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# ZSH autosuggestions
+bindkey '^ ' autosuggest-accept
+bindkey '^x' autosuggest-clear
+
+# Bash aliases
 [ -f "${HOME}/.bash_aliases" ] && . "${HOME}/.bash_aliases"
