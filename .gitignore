@@ -15,3 +15,5 @@
 !tmux/tmux.conf
 !.zshrc
 !.shellrc
+!scripts
+!scripts/ram_usage.sh
