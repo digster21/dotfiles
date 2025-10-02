@@ -9,7 +9,7 @@ humanize() {
     awk -v fmt="$1" -v v="$2" 'BEGIN {printf fmt, v/1048576}'
 }
 
-used_h=$(humanize "%5.1f" "$used_kb")
+used_h=$(humanize "%4.1f" "$used_kb")
 total_h=$(humanize "%.1f" "$total_kb")
 
 echo "${used_h}/${total_h} Gi"
