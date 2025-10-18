@@ -1,19 +1,25 @@
-# Ignore everything 
-*
+# Logs and caches
+*.log
+*.cache
+.cache/
+tmp/
+*.tmp
 
-# Allowlist 
-!slinks.txt
-!setup.sh
-!.gitignore
-!.gitconfig
-!.bashrc
-!.bash_aliases
-!.vimrc
-!nvim
-!nvim/init.lua
-!tmux
-!tmux/tmux.conf
-!.zshrc
-!.shellrc
-!scripts
-!scripts/ram_usage.sh
+# Editors
+*.swp
+*.swo
+*.bak
+*~
+
+# Secrets
+ssh/*
+!.ssh/config
+*.key
+*.pem
+*.gpg
+.env
+.envrc
+.secrets
+
+# NVIM
+nvim/lazy-lock.json
