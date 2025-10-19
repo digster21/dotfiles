@@ -22,4 +22,4 @@ ssh/*
 .secrets
 
 # NVIM
-nvim/lazy-lock.json
+lazy-lock.json
