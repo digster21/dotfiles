@@ -4,12 +4,16 @@ return {
   config = function()
     local telescope = require("telescope.builtin")
 
-    vim.keymap.set("n", "<leader>ff", telescope.find_files, {
-      desc = "Find Files by name",
+    vim.keymap.set("n", "<leader>fa", function()
+            telescope.find_files({ hidden = true })
+        end, {
+      desc = "Find files by name",
     })
 
-    vim.keymap.set("n", "<leader>fg", telescope.git_files, {
-      desc = "Find Git files by name",
+    vim.keymap.set("n", "<leader>ff", function()
+            telescope.git_files({ hidden = true, show_untracked = true })
+        end, {
+      desc = "Find git files by name",
     })
 
     vim.keymap.set("n", "<leader>fr", function()
@@ -19,7 +23,7 @@ return {
         end,
       })
     end, {
-      desc = "Find content by Regex (ripgrep)",
+      desc = "Find content by regex (ripgrep)",
     })
 
     vim.keymap.set("n", "<leader>fs", function()
@@ -29,11 +33,11 @@ return {
         end,
       })
     end, {
-      desc = "Find content by String (ripgrep)",
+      desc = "Find content by string (ripgrep)",
     })
 
     vim.keymap.set("n", "<leader>fw", telescope.grep_string, {
-      desc = "Find content by Word under cursor",
+      desc = "Find content by word under cursor",
     })
   end,
 }
