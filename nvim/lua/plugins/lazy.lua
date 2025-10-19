@@ -16,4 +16,5 @@ require("lazy").setup({
     { import = "plugins.theme" },
     { import = "plugins.sensible" },
     { import = "plugins.autopairs" },
+    { import = "plugins.gitsigns" },
 })
