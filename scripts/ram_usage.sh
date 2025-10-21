@@ -13,4 +13,3 @@ used_h=$(humanize "%4.1f" "$used_kb")
 total_h=$(humanize "%.1f" "$total_kb")
 
 echo "${used_h}/${total_h} Gi"
-

@@ -13,6 +13,7 @@ require("lazy").setup({
     { import = "plugins.telescope" },
     { import = "plugins.neotree" },
     { import = "plugins.cmp" },
+    { import = "plugins.mason" },
     { import = "plugins.theme" },
     { import = "plugins.sensible" },
     { import = "plugins.autopairs" },
