@@ -1,5 +1,5 @@
 -- Line numbers
-vim.opt.relativenumber = false 
+vim.opt.relativenumber = false
 vim.opt.number = true
 
 -- Indentation

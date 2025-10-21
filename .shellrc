@@ -13,8 +13,6 @@ else
 fi
 export EDITOR
 
-
-
 # Add Pager preference
 if command -v less >/dev/null 2>&1; then
     export LESS='-F -X -R'

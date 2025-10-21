@@ -1,0 +1,14 @@
+{
+    "Lua": {
+        "diagnostics": {
+            "globals": [
+                "vim"
+            ]
+        },
+        "workspace": {
+            "library": [
+                "./lua"
+            ]
+        }
+    }
+}

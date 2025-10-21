@@ -32,7 +32,7 @@ vim.g.mapleader = " "
 
 -- Initialize LAZY plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then 
+if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
         "git", "clone", "--filter=blob:none",
         "https://github.com/folke/lazy.nvim.git",
@@ -44,16 +44,16 @@ vim.opt.rtp:prepend(lazypath)
 -- Install plugs with LAZY
 require("lazy").setup({
     "tpope/vim-sensible",
-{
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    config = function()
-        require("nvim-treesitter.configs").setup({
-            highlight = { enable = true },
-            indent = { enable = true },
-        })
-    end,
-},
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        config = function()
+            require("nvim-treesitter.configs").setup({
+                highlight = { enable = true },
+                indent = { enable = true },
+            })
+        end,
+    },
     {
         "nvim-telescope/telescope.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
@@ -79,7 +79,7 @@ require("lazy").setup({
                 cpp = { "clang-format" },
             },
             format_on_save = {
-                timeout_ms = 500, 
+                timeout_ms = 500,
                 lsp_fallback = true,
             },
         },
@@ -87,7 +87,7 @@ require("lazy").setup({
     "folke/tokyonight.nvim",
 })
 
--- Configure VIM settings 
+-- Configure VIM settings
 vim.opt.number = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -101,15 +101,23 @@ vim.keymap.set("v", "jk", "<Esc>", { noremap = true, silent = true })
 vim.keymap.set("s", "jk", "<Esc>", { noremap = true, silent = true })
 
 -- Map keybinding for formatting
-vim.keymap.set("n", "<leader>F", function() require("conform").format({ async = true }) end, { desc = "Run formatter for current buffer", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>F", function() require("conform").format({ async = true }) end,
+    { desc = "Run formatter for current buffer", noremap = true, silent = true })
 
 -- Telescope config
 local telescope = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", telescope.find_files, { desc = "Telescope find files by name", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>fg", telescope.git_files, { desc = "Telescope find files by name (git)", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>fr", function() telescope.live_grep({ additional_args = function() return { "--hidden", "--no-ignore" } end, }) end, { desc = "Telescope find file by contents (ripgrep regex)", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>fs", function() telescope.live_grep({ additional_args = function() return { "--hidden", "--no-ignore", "--fixed-strings" } end, }) end, { desc = "Telescope find file by contents (ripgrep string)", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>fw", telescope.grep_string, { desc = "Telescope find file using stirng under cursor", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>ff", telescope.find_files,
+    { desc = "Telescope find files by name", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fg", telescope.git_files,
+    { desc = "Telescope find files by name (git)", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fr",
+    function() telescope.live_grep({ additional_args = function() return { "--hidden", "--no-ignore" } end, }) end,
+    { desc = "Telescope find file by contents (ripgrep regex)", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fs",
+    function() telescope.live_grep({ additional_args = function() return { "--hidden", "--no-ignore", "--fixed-strings" } end, }) end,
+    { desc = "Telescope find file by contents (ripgrep string)", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fw", telescope.grep_string,
+    { desc = "Telescope find file using stirng under cursor", noremap = true, silent = true })
 -- NeoTree config
 require("neo-tree").setup({
     window = {
@@ -123,8 +131,10 @@ require("neo-tree").setup({
         },
     },
 })
-vim.keymap.set("n", "<leader>tt", ":Neotree filesystem focus<CR>", { desc = "Neotree focus filesystem tree", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>tg", ":Neotree git_status focus<CR>", { desc = "Neotree focus git status tree", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>tt", ":Neotree filesystem focus<CR>",
+    { desc = "Neotree focus filesystem tree", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>tg", ":Neotree git_status focus<CR>",
+    { desc = "Neotree focus git status tree", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>tx", ":Neotree close<CR>", { desc = "Neotree close", noremap = true, silent = true })
 
 -- IntelliSense config (cmp)
@@ -137,7 +147,7 @@ cmp.setup({
         ["<C-Space>"] = cmp.mapping.complete(),
     }),
     sources = {
-        {name = "nvim_lsp" },
+        { name = "nvim_lsp" },
     },
 })
 
@@ -157,8 +167,8 @@ lspconfig.clangd.setup({
 })
 lspconfig.pyright.setup({ capabilities = capabilities })
 
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Language Server show diagnostic message", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float,
+    { desc = "Language Server show diagnostic message", noremap = true, silent = true })
 
 -- Theme
 vim.cmd.colorscheme("tokyonight")
-
