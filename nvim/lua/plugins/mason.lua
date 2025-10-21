@@ -1,22 +1,22 @@
 return {
-  {
-    "mason-org/mason.nvim",
-    dependencies = {
-      "mason-org/mason-lspconfig.nvim",
-    },
-    config = function()
-      require("mason").setup()
-      require("mason-lspconfig").setup({
-        ensure_installed = {
-          "bashls",
-          "eslint",
-          "jsonls",
-          "lua_ls",
-          "pyright",
-          "ts_ls",
+    {
+        "mason-org/mason.nvim",
+        dependencies = {
+            "mason-org/mason-lspconfig.nvim",
         },
-        automatic_installation = true,
-      })
-    end
-  }
+        config = function()
+            require("mason").setup()
+            require("mason-lspconfig").setup({
+                ensure_installed = {
+                    "bashls",
+                    "eslint",
+                    "jsonls",
+                    "lua_ls",
+                    "pyright",
+                    "ts_ls",
+                },
+                automatic_installation = true,
+            })
+        end
+    }
 }
