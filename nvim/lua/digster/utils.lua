@@ -51,7 +51,7 @@ function utils.find_file_path(filename, dir, depth)
 end
 
 function utils.find_file_dir(filename, dir, depth)
-    local filepath = utils.find_file(filename, dir, depth)
+    local filepath = utils.find_file_path(filename, dir, depth)
     if filepath then
         return vim.fn.fnamemodify(filepath, ":h")
     end
