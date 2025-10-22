@@ -1,37 +1,35 @@
-local function set_global_keymaps(client, bufnr)
-    local map = function(lhs, rhs, desc)
-        vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc })
-    end
+local utils = require("digster.utils")
 
-    map("<leader>LR", ":LspRestart<CR>", "LSP restart server")
-    map("<leader>la", vim.lsp.buf.code_action, "LSP show code actions")
-    map("<leader>ld", ":Telescope lsp_definitions<CR>", "LSP go to definition")
-    map("<leader>le", ":Telescope lsp_references<CR>", "LSP go to references")
+local function set_global_keymaps(client, buffer)
+    utils.keymap_set("n","<leader>LR", ":LspRestart<CR>", { desc = "LSP restart server"})
+    utils.keymap_set("n","<leader>la", vim.lsp.buf.code_action, { desc = "LSP show code actions"})
+    utils.keymap_set("n","<leader>ld", ":Telescope lsp_definitions<CR>", { desc = "LSP go to definition"})
+    utils.keymap_set("n","<leader>le", ":Telescope lsp_references<CR>", { desc = "LSP go to references"})
 
     if client:supports_method("textDocument/declaration") then
-        map("<leader>lf", vim.lsp.buf.declaration, "LSP go to declaration")
+        utils.keymap_set("n","<leader>lf", vim.lsp.buf.declaration, { desc = "LSP go to declaration"})
     end
 
-    map("<leader>lt", ":Telescope lsp_type_definitions<CR>", "LSP go to type definition")
-    map("<leader>ls", vim.lsp.buf.hover, "LSP show hover information")
-    map("<leader>li", ":Telescope lsp_implementations<CR>", "LSP go to implementation")
-    map("<leader>lh", vim.lsp.buf.signature_help, "LSP show signature help")
-    map("<leader>lr", vim.lsp.buf.rename, "LSP rename symbol")
+    utils.keymap_set("n","<leader>lt", ":Telescope lsp_type_definitions<CR>", { desc = "LSP go to type definition"})
+    utils.keymap_set("n","<leader>ls", vim.lsp.buf.hover, { desc = "LSP show hover information"})
+    utils.keymap_set("n","<leader>li", ":Telescope lsp_implementations<CR>", { desc = "LSP go to implementation"})
+    utils.keymap_set("n","<leader>lh", vim.lsp.buf.signature_help, { desc = "LSP show signature help"})
+    utils.keymap_set("n","<leader>lr", vim.lsp.buf.rename, { desc = "LSP rename symbol"})
 
-    map("<leader>dl", vim.diagnostic.open_float, "Show line diagnostics")
-    map("<leader>ds", ":Telescope diagnostics bufnr=0<CR>", "Show buffer diagnostics")
+    utils.keymap_set("n", "<leader>dl", vim.diagnostic.open_float, { desc = "Show line diagnostics"})
+    utils.keymap_set("n", "<leader>ds", ":Telescope diagnostics bufnr=0<CR>",{ desc =  "Show buffer diagnostics"})
 
-    vim.keymap.set("n", "<leader>dp", function()
+    utils.keymap_set("n", "<leader>dp", function()
         vim.diagnostic.jump({ count = -1 })
-    end, { buffer = bufnr, desc = "Previous diagnostic" })
+    end, { buffer = buffer, desc = "Previous diagnostic" })
 
-    vim.keymap.set("n", "<leader>dn", function()
+    utils.keymap_set("n", "<leader>dn", function()
         vim.diagnostic.jump({ count = 1 })
-    end, { buffer = bufnr, desc = "Next diagnostic" })
+    end, { buffer = buffer, desc = "Next diagnostic" })
 
-    vim.keymap.set("n", "<leader>F", function()
+    utils.keymap_set("n", "<leader>F", function()
         vim.lsp.buf.format({ async = true })
-    end, { buffer = bufnr, desc = "Format buffer" })
+    end, { buffer = buffer, desc = "Format buffer" })
 end
 
 local function configure_diagnostics()
