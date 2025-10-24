@@ -18,4 +18,5 @@ require("lazy").setup({
     { import = "digster.plugins.sensible" },
     { import = "digster.plugins.autopairs" },
     { import = "digster.plugins.gitsigns" },
+    { import = "digster.plugins.indent" },
 })
