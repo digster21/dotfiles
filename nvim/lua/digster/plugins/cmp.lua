@@ -20,7 +20,7 @@ return {
                 ["<C-k>"] = cmp.mapping.select_prev_item(),
                 ['<C-f>'] = cmp.mapping.scroll_docs(4),
                 ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                ["<C-TAB>"] = cmp.mapping.complete(),
+                ["<C-s>"] = cmp.mapping.complete(),
                 ['<C-e>'] = cmp.mapping.abort(),
                 ["<C-Space>"] = cmp.mapping.confirm({ select = true }),
             }),
