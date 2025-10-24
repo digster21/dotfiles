@@ -20,7 +20,7 @@ return {
             changedelete = { text = '~' },
             untracked    = { text = '┆' },
         },
-        on_attach = function(buffer)
+        on_attach = function()
             local gs = package.loaded.gitsigns
 
             -- Hunk selection with motions
