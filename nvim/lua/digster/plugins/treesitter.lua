@@ -6,7 +6,7 @@ return {
         highlight = { enable = true },
         indent = { enable = true },
         ensure_installed = {
-            "c", "cpp", "lua", "python", "bash", "json", "yaml", "vim", "markdown",
+            "c", "cpp", "lua", "python", "bash", "json", "yaml", "vim", "markdown", "yaml",
         },
     },
     config = function(_, opts)
