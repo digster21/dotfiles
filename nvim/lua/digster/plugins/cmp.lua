@@ -16,13 +16,14 @@ return {
 
         cmp.setup({
             mapping = cmp.mapping.preset.insert({
-                ["<C-j>"] = cmp.mapping.select_next_item(),
-                ["<C-k>"] = cmp.mapping.select_prev_item(),
-                ['<C-f>'] = cmp.mapping.scroll_docs(4),
-                ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                ["<C-s>"] = cmp.mapping.complete(),
-                ['<C-e>'] = cmp.mapping.abort(),
-                ["<C-Space>"] = cmp.mapping.confirm({ select = true }),
+                ["<C-s>"] = cmp.mapping.complete(),                     -- Selection Start
+                ['<C-e>'] = cmp.mapping.abort(),                        -- Selection End
+                ["<C-j>"] = cmp.mapping.select_next_item(),             -- Selection Next
+                ["<C-k>"] = cmp.mapping.select_prev_item(),             -- Selection Prev
+                ['<C-f>'] = cmp.mapping.scroll_docs(4),                 -- Documentation scroll forwards
+                ['<C-b>'] = cmp.mapping.scroll_docs(-4),                -- Documentation scroll Backwards
+                ["<C-Space>"] = cmp.mapping.confirm({ select = true }), -- Autocomplete (matches zsh auto-suggestions)
+                ["<ENTER>"] = cmp.mapping.confirm({ select = true }),   -- Autocomplete (matches VS-code)
             }),
             sources = {
                 { name = "nvim_lsp" },
