@@ -1,29 +1,20 @@
 local utils = require("digster.utils")
 
 local function set_global_keymaps(client, buffer)
-    utils.keymap_set("n","<leader>LR", ":LspRestart<CR>", { desc = "LSP restart server"})
-    utils.keymap_set("n","<leader>la", vim.lsp.buf.code_action, { desc = "LSP show code actions"})
-    utils.keymap_set("n","<leader>ld", ":Telescope lsp_definitions<CR>", { desc = "LSP go to definition"})
-    utils.keymap_set("n","<leader>le", ":Telescope lsp_references<CR>", { desc = "LSP go to references"})
-
     if client:supports_method("textDocument/declaration") then
-        utils.keymap_set("n","<leader>lf", vim.lsp.buf.declaration, { desc = "LSP go to declaration"})
+        utils.keymap_set("n", "<leader>lp", vim.lsp.buf.declaration, { desc = "LSP go to declaration" })
     end
 
-    utils.keymap_set("n","<leader>lt", ":Telescope lsp_type_definitions<CR>", { desc = "LSP go to type definition"})
-    utils.keymap_set("n","<leader>ls", vim.lsp.buf.hover, { desc = "LSP show hover information"})
-    utils.keymap_set("n","<leader>li", ":Telescope lsp_implementations<CR>", { desc = "LSP go to implementation"})
-    utils.keymap_set("n","<leader>lh", vim.lsp.buf.signature_help, { desc = "LSP show signature help"})
-    utils.keymap_set("n","<leader>lr", vim.lsp.buf.rename, { desc = "LSP rename symbol"})
+    utils.keymap_set("n", "<leader>lh", vim.lsp.buf.signature_help, { desc = "LSP show signature help" })
+    utils.keymap_set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "LSP rename symbol" })
+    utils.keymap_set("n", "<leader>ls", vim.lsp.buf.hover, { desc = "LSP show hover information" })
+    utils.keymap_set("n", "<leader>le", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
 
-    utils.keymap_set("n", "<leader>dl", vim.diagnostic.open_float, { desc = "Show line diagnostics"})
-    utils.keymap_set("n", "<leader>ds", ":Telescope diagnostics bufnr=0<CR>",{ desc =  "Show buffer diagnostics"})
-
-    utils.keymap_set("n", "<leader>dp", function()
+    utils.keymap_set("n", "<leader>dk", function()
         vim.diagnostic.jump({ count = -1 })
     end, { buffer = buffer, desc = "Previous diagnostic" })
 
-    utils.keymap_set("n", "<leader>dn", function()
+    utils.keymap_set("n", "<leader>dj", function()
         vim.diagnostic.jump({ count = 1 })
     end, { buffer = buffer, desc = "Next diagnostic" })
 
