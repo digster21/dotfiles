@@ -41,5 +41,13 @@ return {
         utils.keymap_set("n", "<leader>fw", telescope.grep_string, {
             desc = "Find content by word under cursor",
         })
+
+        utils.keymap_set("n", "<leader>fd", ":Telescope lsp_definitions<CR>", { desc = "Find definition" })
+        utils.keymap_set("n", "<leader>fu", ":Telescope lsp_references<CR>", { desc = "Find usage" })
+
+        utils.keymap_set("n", "<leader>ft", ":Telescope lsp_type_definitions<CR>", { desc = "Find type definition" })
+        utils.keymap_set("n", "<leader>fi", ":Telescope lsp_implementations<CR>", { desc = "LSP go to implementation" })
+
+        utils.keymap_set("n", "<leader>fe", ":Telescope diagnostics bufnr=0<CR>", { desc = "Show buffer diagnostics" })
     end,
 }

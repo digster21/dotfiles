@@ -1,9 +1,9 @@
-BLanguage: Cpp
+Language: Cpp
 Standard: Cpp11
-AasedOnStyle: Chromium
+BasedOnStyle: Chromium
 UseTab: Never
 IndentWidth: 4
 ColumnLimit: 100
 AlignAfterOpenBracket: Align
-lignConsecutiveMacros: AcrossEmptyLinesAndComments
+AlignConsecutiveMacros: AcrossEmptyLinesAndComments
 AlignConsecutiveBitFields: AcrossEmptyLinesAndComments
