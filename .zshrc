@@ -59,9 +59,19 @@ ZSH_THEME="frisk"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-AUTOSUGGEST_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
-if [ ! -d "$AUTOSUGGEST_DIR" ]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$AUTOSUGGEST_DIR"
+PLUG_DIR_AUTOSUGGEST="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+if [ ! -d "$PLUG_DIR_AUTOSUGGEST" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions.git "$PLUG_DIR_AUTOSUGGEST"
+fi
+
+PLUG_DIR_SYNTAXHI="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+if [ ! -d "$PLUG_DIR_SYNTAXHI" ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$PLUG_DIR_SYNTAXHI"
+fi
+
+PLUG_DIR_YOUSHOULDUSE="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/you-should-use"
+if [ ! -d "$PLUG_DIR_YOUSHOULDUSE" ]; then
+    git clone https://github.com/MichaelAquilina/zsh-you-should-use.git "$PLUG_DIR_YOUSHOULDUSE"
 fi
 
 # Which plugins would you like to load?
@@ -72,6 +82,8 @@ fi
 plugins=(
     git
     zsh-autosuggestions
+    zsh-syntax-highlighting
+    you-should-use
 )
 
 source $ZSH/oh-my-zsh.sh
