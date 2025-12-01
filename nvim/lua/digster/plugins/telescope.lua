@@ -13,7 +13,12 @@ return {
         })
 
         utils.keymap_set("n", "<leader>ff", function()
-            telescope.git_files({ hidden = true, show_untracked = true })
+            local ret = pcall(function()
+                telescope.git_files({ hidden = true, show_untracked = true })
+            end)
+            if not ret then
+                telescope.find_files({ hidden = true })
+            end
         end, {
             desc = "Find git files by name",
         })
