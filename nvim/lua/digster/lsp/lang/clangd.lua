@@ -11,7 +11,6 @@ if compile_cmd_dir then
 
     vim.lsp.config.clangd =
     {
-        root_markers = { ".git" },
         filetypes = { "c", "cpp", "h", "hpp" },
         cmd = cmd,
     }

@@ -3,7 +3,6 @@ local utils = require("digster.utils")
 vim.lsp.config.eslint = {
     cmd = { "vscode-eslint-language-server", "--stdio" },
     filetypes = { "javascript", "typescript", "typescriptreact", "javascriptreact" },
-    root_markers = { ".eslintrc.json", "package.json", "tsconfig.json", ".git" },
     settings = {
         codeAction = {
             disableRuleComment = {
