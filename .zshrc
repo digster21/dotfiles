@@ -59,32 +59,36 @@ ZSH_THEME="frisk"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+
+plugins=(git)
+
 PLUG_DIR_AUTOSUGGEST="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
 if [ ! -d "$PLUG_DIR_AUTOSUGGEST" ]; then
     git clone https://github.com/zsh-users/zsh-autosuggestions.git "$PLUG_DIR_AUTOSUGGEST"
 fi
+plugins+=(zsh-autosuggestions)
 
-PLUG_DIR_SYNTAXHI="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
-if [ ! -d "$PLUG_DIR_SYNTAXHI" ]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$PLUG_DIR_SYNTAXHI"
+bindkey '^ ' autosuggest-accept
+bindkey '^x' autosuggest-clear
+
+if ! uname -r | grep -qiE "microsoft|wsl"; then
+    PLUG_DIR_SYNTAXHI="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+    if [ ! -d "$PLUG_DIR_SYNTAXHI" ]; then
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$PLUG_DIR_SYNTAXHI"
+    fi
+    plugins+=(zsh-syntax-highlighting)
 fi
 
 PLUG_DIR_YOUSHOULDUSE="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/you-should-use"
 if [ ! -d "$PLUG_DIR_YOUSHOULDUSE" ]; then
     git clone https://github.com/MichaelAquilina/zsh-you-should-use.git "$PLUG_DIR_YOUSHOULDUSE"
 fi
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-    git
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-    you-should-use
-)
+plugins+=(you-should-use)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -116,10 +120,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# ZSH autosuggestions
-bindkey '^ ' autosuggest-accept
-bindkey '^x' autosuggest-clear
 
 # Bash aliases
 [ -f "${HOME}/.bash_aliases" ] && . "${HOME}/.bash_aliases"
