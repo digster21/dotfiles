@@ -65,16 +65,15 @@ ZSH_THEME="frisk"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-plugins=(git)
+plugins=(
+    git
+)
 
 PLUG_DIR_AUTOSUGGEST="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
 if [ ! -d "$PLUG_DIR_AUTOSUGGEST" ]; then
     git clone https://github.com/zsh-users/zsh-autosuggestions.git "$PLUG_DIR_AUTOSUGGEST"
 fi
 plugins+=(zsh-autosuggestions)
-
-bindkey '^ ' autosuggest-accept
-bindkey '^x' autosuggest-clear
 
 if ! uname -r | grep -qiE "microsoft|wsl"; then
     PLUG_DIR_SYNTAXHI="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
@@ -120,6 +119,24 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+PYENV_ROOT="$HOME/.pyenv"
+if [ ! -d "$PYENV_ROOT" ]; then
+    git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
+fi
+export PYENV_ROOT
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+
+PYENV_PLUG_DIR_VENV="$(pyenv root)/plugins/pyenv-virtualenv"
+if [ ! -d "$PYENV_PLUG_DIR_VENV" ]; then
+    git clone "https://github.com/pyenv/pyenv-virtualenv.git" "$PYENV_PLUG_DIR_VENV"
+fi
+eval "$(pyenv virtualenv-init -)"
+
+bindkey '^ ' autosuggest-accept
+bindkey '^x' autosuggest-clear
 
 # Bash aliases
 [ -f "${HOME}/.bash_aliases" ] && . "${HOME}/.bash_aliases"
