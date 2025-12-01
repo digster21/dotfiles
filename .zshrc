@@ -8,7 +8,7 @@ export ZSH="$HOME/.oh-my-zsh"
 
 # Set the theme to load (Try "random" -> echo $RANDOM_THEME)
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="frisk"
+ZSH_THEME="candy"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -89,6 +89,23 @@ if [ ! -d "$PLUG_DIR_YOUSHOULDUSE" ]; then
 fi
 plugins+=(you-should-use)
 
+PYENV_ROOT="$HOME/.pyenv"
+if [ ! -d "$PYENV_ROOT" ]; then
+    git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
+fi
+export PYENV_ROOT
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+plugins+=(pyenv)
+
+PYENV_PLUG_DIR_VENV="$(pyenv root)/plugins/pyenv-virtualenv"
+if [ ! -d "$PYENV_PLUG_DIR_VENV" ]; then
+    git clone "https://github.com/pyenv/pyenv-virtualenv.git" "$PYENV_PLUG_DIR_VENV"
+fi
+eval "$(pyenv virtualenv-init -)"
+
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -119,21 +136,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-PYENV_ROOT="$HOME/.pyenv"
-if [ ! -d "$PYENV_ROOT" ]; then
-    git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
-fi
-export PYENV_ROOT
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-
-PYENV_PLUG_DIR_VENV="$(pyenv root)/plugins/pyenv-virtualenv"
-if [ ! -d "$PYENV_PLUG_DIR_VENV" ]; then
-    git clone "https://github.com/pyenv/pyenv-virtualenv.git" "$PYENV_PLUG_DIR_VENV"
-fi
-eval "$(pyenv virtualenv-init -)"
 
 bindkey '^ ' autosuggest-accept
 bindkey '^x' autosuggest-clear
