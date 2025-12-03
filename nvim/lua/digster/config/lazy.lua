@@ -20,4 +20,5 @@ require("lazy").setup({
     { import = "digster.plugins.autopairs" },
     { import = "digster.plugins.gitsigns" },
     { import = "digster.plugins.indent" },
+    { import = "digster.plugins.eyeliner" },
 })
