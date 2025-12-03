@@ -19,7 +19,10 @@ local function set_global_keymaps(client, buffer)
     end, { buffer = buffer, desc = "Next diagnostic" })
 
     utils.keymap_set("n", "<leader>F", function()
-        vim.lsp.buf.format({ async = true })
+        -- Attempt to format a document with both builtin lsp and conform
+        -- Hopefully there is no overlap in formatters
+        vim.lsp.buf.format()
+        require("conform").format()
     end, { buffer = buffer, desc = "Format buffer" })
 end
 

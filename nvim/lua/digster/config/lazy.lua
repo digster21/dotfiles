@@ -9,11 +9,12 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+    { import = "digster.plugins.mason" },
     { import = "digster.plugins.treesitter" },
     { import = "digster.plugins.telescope" },
     { import = "digster.plugins.neotree" },
     { import = "digster.plugins.cmp" },
-    { import = "digster.plugins.mason" },
+    { import = "digster.plugins.conform" },
     { import = "digster.plugins.theme" },
     { import = "digster.plugins.sensible" },
     { import = "digster.plugins.autopairs" },

@@ -18,6 +18,21 @@ return {
                 },
                 automatic_installation = true,
             })
+            require("mason-tool-installer").setup({
+                ensure_installed = { "black" },
+                run_on_start = true,
+            })
         end
-    }
+    },
+    {
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
+        dependencies = { "mason-org/mason.nvim" },
+        config = function()
+            require("mason-tool-installer").setup({
+                ensure_installed = { "black" },
+                auto_update = true,
+                run_on_start = true,
+            })
+        end,
+    },
 }
