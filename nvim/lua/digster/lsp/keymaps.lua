@@ -5,8 +5,8 @@ local function set_global_keymaps(client, buffer)
         utils.keymap_set("n", "<leader>lp", vim.lsp.buf.declaration, { desc = "LSP go to declaration" })
     end
 
+    utils.keymap_set("n", "<leader>r", vim.lsp.buf.rename, { desc = "LSP rename symbol" })
     utils.keymap_set("n", "<leader>lh", vim.lsp.buf.signature_help, { desc = "LSP show signature help" })
-    utils.keymap_set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "LSP rename symbol" })
     utils.keymap_set("n", "<leader>ls", vim.lsp.buf.hover, { desc = "LSP show hover information" })
     utils.keymap_set("n", "<leader>le", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
 
