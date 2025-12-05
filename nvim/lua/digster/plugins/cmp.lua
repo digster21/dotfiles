@@ -23,6 +23,7 @@ return {
                 ['<C-f>'] = cmp.mapping.scroll_docs(4),                 -- Documentation scroll forwards
                 ['<C-b>'] = cmp.mapping.scroll_docs(-4),                -- Documentation scroll Backwards
                 ["<C-Space>"] = cmp.mapping.confirm({ select = true }), -- Autocomplete (matches zsh auto-suggestions)
+                ["<ENTER>"] = cmp.mapping.confirm({ select = true }),   -- Autocomplete (matches zsh auto-suggestions)
             }),
             sources = {
                 { name = "nvim_lsp" },
@@ -34,7 +35,7 @@ return {
                 documentation = cmp.config.window.bordered({ max_width = popup_menu_col_width }),
             },
             completion = {
-                keyword_length = 2,
+                -- keyword_length = 2,
             },
         })
     end,

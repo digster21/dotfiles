@@ -1,24 +1,10 @@
 local utils = require("digster.utils")
 
 local function set_global_keymaps(client, buffer)
-    if client:supports_method("textDocument/declaration") then
-        utils.keymap_set("n", "<leader>lp", vim.lsp.buf.declaration, { desc = "LSP go to declaration" })
-    end
+    utils.keymap_set("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename symbol" })
+    utils.keymap_set("n", "<leader>d", vim.lsp.buf.hover, { desc = "Show docs" })
 
-    utils.keymap_set("n", "<leader>r", vim.lsp.buf.rename, { desc = "LSP rename symbol" })
-    utils.keymap_set("n", "<leader>lh", vim.lsp.buf.signature_help, { desc = "LSP show signature help" })
-    utils.keymap_set("n", "<leader>ls", vim.lsp.buf.hover, { desc = "LSP show hover information" })
-    utils.keymap_set("n", "<leader>le", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
-
-    utils.keymap_set("n", "<leader>dk", function()
-        vim.diagnostic.jump({ count = -1 })
-    end, { buffer = buffer, desc = "Previous diagnostic" })
-
-    utils.keymap_set("n", "<leader>dj", function()
-        vim.diagnostic.jump({ count = 1 })
-    end, { buffer = buffer, desc = "Next diagnostic" })
-
-    utils.keymap_set("n", "<leader>F", function()
+    utils.keymap_set("n", "<leader>v", function()
         -- Attempt to format a document with both builtin lsp and conform
         -- Hopefully there is no overlap in formatters
         vim.lsp.buf.format()

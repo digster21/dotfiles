@@ -8,17 +8,14 @@ return {
     },
     cmd = "Neotree",
     keys = {
-        { "<leader>tt", "<cmd>Neotree filesystem focus<CR>",       desc = "Focus filesystem tree" },
-        { "<leader>tg", "<cmd>Neotree git_status focus<CR>",       desc = "Focus gitfiles tree" },
-        { "<leader>tb", "<cmd>Neotree buffers focus<CR>",          desc = "Focus buffers" },
-        { "<leader>ts", "<cmd>Neotree document_symbols focus<CR>", desc = "Focus document symbols" },
-        { "<leader>tx", "<cmd>Neotree close<CR>",                  desc = "Close tree" },
+        { "<leader>tt", "<cmd>Neotree filesystem focus left<CR>",        desc = "Focus filesystem tree" },
+        { "<leader>tg", "<cmd>Neotree git_status focus left<CR>",        desc = "Focus gitfiles tree" },
+        { "<leader>tf", "<cmd>Neotree document_symbols focus right<CR>", desc = "Focus document symbols" },
     },
     opts = {
         close_if_last_window = true,
         sources = {
             "filesystem",
-            "buffers",
             "document_symbols",
             "git_status",
         },
@@ -31,9 +28,6 @@ return {
                 hide_dotfiles = false,
                 hide_gitignored = false,
             },
-        },
-        window = {
-            position = "left",
         },
     },
 }
