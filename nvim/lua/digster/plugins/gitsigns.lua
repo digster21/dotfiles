@@ -26,6 +26,10 @@ return {
         },
         attach_to_untracked = true,
         on_attach = function()
+            if utils.is_git_repo() then
+                return
+            end
+
             local gs = package.loaded.gitsigns
 
             -- Hunk selection with motions
@@ -37,13 +41,16 @@ return {
             utils.keymap_set("n", "<leader>l", gs.diffthis, { desc = "Git diff staged" })
 
             -- Staging/Unstaging/Resetting
-            utils.keymap_set("n", "<leader>b", ":Gitsigns reset_hunk<CR>", { desc = "Git reset hunk" })
+            utils.keymap_set("n", "<leader>m", ":Gitsigns reset_hunk<CR>", { desc = "Git reset hunk" })
             utils.keymap_set("n", "<leader>n", ":Gitsigns stage_hunk<CR>", { desc = "Git stage hunk" })
-            utils.keymap_set("n", "<leader>m", gs.undo_stage_hunk, { desc = "Git unstage hunk" })
+            utils.keymap_set("n", "<leader>b", gs.undo_stage_hunk, { desc = "Git unstage hunk" })
 
-            utils.keymap_set("n", "<leader>B", gs.reset_buffer, { desc = "Git reset buffer" })
+            utils.keymap_set("n", "<leader>M", gs.reset_buffer, { desc = "Git reset buffer" })
             utils.keymap_set("n", "<leader>N", gs.stage_buffer, { desc = "Git stage buffer" })
---            utils.keymap_set("n", "<leader>M", gs.undo_stage_buffer, { desc = "Git unstage buffer" })
+            utils.keymap_set("n", "<leader>B", function()
+                local file = vim.fn.expand("%:p")
+                vim.cmd("silent !git reset HEAD " .. file)
+            end, { desc = "Git unstage buffer" })
         end,
     },
 }

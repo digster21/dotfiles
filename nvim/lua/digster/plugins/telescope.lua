@@ -13,10 +13,9 @@ return {
         })
 
         utils.keymap_set("n", "<leader>f", function()
-            local ret = pcall(function()
+            if utils.is_git_repo() then
                 telescope.git_files({ hidden = true, show_untracked = true })
-            end)
-            if not ret then
+            else
                 telescope.find_files({ hidden = true })
             end
         end, {
@@ -54,7 +53,8 @@ return {
         utils.keymap_set("n", "<leader>e", ":Telescope diagnostics bufnr=0<CR>", { desc = "Show buffer diagnostics" })
 
         utils.keymap_set("n", "<leader>d", ":Telescope lsp_definitions<CR>", { desc = "Find definition of var" })
-        utils.keymap_set("n", "<leader>D", ":Telescope lsp_type_definitions<CR>", { desc = "Find definition of var type" })
+        utils.keymap_set("n", "<leader>D", ":Telescope lsp_type_definitions<CR>",
+            { desc = "Find definition of var type" })
         utils.keymap_set("n", "<leader>i", ":Telescope lsp_implementations<CR>", { desc = "Find to implementation" })
     end,
 }

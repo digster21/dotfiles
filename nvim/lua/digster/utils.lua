@@ -1,5 +1,14 @@
 local utils = {}
 
+-- Set neovim keymap.
+--
+-- Convenience wrapper around `vim.keymap.set`.
+--
+-- Custom Args:
+--      mops(table): Custom options
+--
+-- Returns:
+--      `vim.keymap.set(...)`
 function utils.keymap_set(mode, lhs, rhs, opts, mops)
     opts = opts or {}
     mops = (type(mops) == "table" and mops) or {}
@@ -19,22 +28,32 @@ function utils.keymap_set(mode, lhs, rhs, opts, mops)
         vim.notify(info, vim.log.levels.DEBUG)
     end
 
-    vim.keymap.set(mode, lhs, rhs, opts)
+    return vim.keymap.set(mode, lhs, rhs, opts)
 end
 
-function utils.find_file_path(filename, dir, depth)
-    depth = depth or 6
-    local function search(d, current_depth)
-        if current_depth > depth then return nil end
+-- Find the path of a filename within a directory.
+-- Searches recursively, and does not follow symlinks.
+--
+-- Args:
+--      filename(str):  Name of the file to search for.
+--      dirpath(str):   Root directory path to start searching from.
+--      max_depth(int|nil): Maximum depth of the search. (default: 6)
+--
+-- Returns:
+--      (str|nil) The path to filename from dirpath
+function utils.resolve_path_from_name_in_dir(filename, dirpath, max_depth)
+    max_depth = max_depth or 6
+    local function search(dir, current_depth)
+        if current_depth > max_depth then return nil end
 
-        local fd = vim.loop.fs_scandir(d)
+        local fd = vim.loop.fs_scandir(dir)
         if not fd then return nil end
 
         while true do
             local name, type = vim.loop.fs_scandir_next(fd)
             if not name then break end
 
-            local path = d .. "/" .. name
+            local path = dir .. "/" .. name
             if name == filename then
                 return path
             elseif type == "directory" then
@@ -47,11 +66,23 @@ function utils.find_file_path(filename, dir, depth)
         return nil
     end
 
-    return search(dir, 0)
+    return search(dirpath, 0)
 end
 
-function utils.find_file_dir(filename, dir, depth)
-    local filepath = utils.find_file_path(filename, dir, depth)
+-- Find the parent directory path of a filename within a directory.
+--
+-- Convenience wrapper around `resolve_path_from_name_in_dir` for
+-- finding the parent directory of the file.
+--
+-- Args:
+--      filename(str):  Name of the file to search for.
+--      dirpath(str):   Root directory path to start searching from.
+--      max_depth(int|nil): Maximum depth of the search.
+--
+-- Returns:
+--      (str|nil) The path to parent directory of the filename from dirpath
+function utils.resolve_pathdir_from_name_in_dir(filename, dirpath, max_depth)
+    local filepath = utils.resolve_path_from_name_in_dir(filename, dirpath, max_depth)
     if filepath then
         return vim.fn.fnamemodify(filepath, ":h")
     end
@@ -64,6 +95,20 @@ function utils.lsp_get_workspace()
         name = vim.fn.fnamemodify(root, ":t"),
         uri = vim.uri_from_fname(root),
     }
+end
+
+-- Check if a path is inside a Git Repo.
+--
+-- Args:
+--      path(str|nil): Path to check. (default: current workspace)
+--
+-- Returns:
+--      (bool) True if in git repo, otherwise false
+function utils.is_git_repo(path)
+    path = path or vim.fn.getcwd()
+    local ok, result = pcall(vim.fn.systemlist,
+        "git -C " .. vim.fn.shellescape(path) .. " rev-parse --is-inside-work-tree")
+    return ok and result[1] == "true"
 end
 
 return utils

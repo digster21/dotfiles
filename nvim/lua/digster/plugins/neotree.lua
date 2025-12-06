@@ -1,3 +1,15 @@
+local utils = require("digster.utils")
+
+
+local keys = {
+    { "<leader>t", "<cmd>Neotree filesystem toggle left<CR>",        desc = "Focus filesystem tree" },
+    { "<leader>y", "<cmd>Neotree document_symbols toggle right<CR>", desc = "Focus document symbols" },
+}
+
+if utils.is_git_repo() then
+    table.insert(keys, { "<leader>g", "<cmd>Neotree git_status toggle left<CR>", desc = "Focus gitfiles tree" })
+end
+
 return {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -7,11 +19,7 @@ return {
         "MunifTanjim/nui.nvim",
     },
     cmd = "Neotree",
-    keys = {
-        { "<leader>t", "<cmd>Neotree filesystem toggle left<CR>",        desc = "Focus filesystem tree" },
-        { "<leader>g", "<cmd>Neotree git_status toggle left<CR>",        desc = "Focus gitfiles tree" },
-        { "<leader>y", "<cmd>Neotree document_symbols toggle right<CR>", desc = "Focus document symbols" },
-    },
+    keys = keys,
     opts = {
         close_if_last_window = true,
         sources = {
