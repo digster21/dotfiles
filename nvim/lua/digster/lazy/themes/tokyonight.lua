@@ -9,7 +9,7 @@ return {
             styles = {
                 comments = { italic = true },
                 keywords = { italic = true },
-                functions = {},
+                functions = { bold = true },
                 variables = {},
             },
         })
