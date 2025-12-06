@@ -18,10 +18,6 @@ return {
                 },
                 automatic_installation = true,
             })
-            require("mason-tool-installer").setup({
-                ensure_installed = { "black" },
-                run_on_start = true,
-            })
         end
     },
     {
