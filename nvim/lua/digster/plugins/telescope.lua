@@ -6,13 +6,13 @@ return {
     config = function()
         local telescope = require("telescope.builtin")
 
-        utils.keymap_set("n", "<leader>fa", function()
+        utils.keymap_set("n", "<leader>a", function()
             telescope.find_files({ hidden = true })
         end, {
             desc = "Find files by name",
         })
 
-        utils.keymap_set("n", "<leader>ff", function()
+        utils.keymap_set("n", "<leader>f", function()
             local ret = pcall(function()
                 telescope.git_files({ hidden = true, show_untracked = true })
             end)
@@ -23,7 +23,7 @@ return {
             desc = "Find git files by name",
         })
 
-        utils.keymap_set("n", "<leader>fr", function()
+        utils.keymap_set("n", "<leader>S", function()
             telescope.live_grep({
                 additional_args = function()
                     return { "--hidden", "--no-ignore" }
@@ -33,7 +33,7 @@ return {
             desc = "Find content by regex (ripgrep)",
         })
 
-        utils.keymap_set("n", "<leader>fs", function()
+        utils.keymap_set("n", "<leader>s", function()
             telescope.live_grep({
                 additional_args = function()
                     return { "--hidden", "--no-ignore", "--fixed-strings" }
@@ -43,18 +43,18 @@ return {
             desc = "Find content by string (ripgrep)",
         })
 
-        utils.keymap_set("n", "<leader>fw", telescope.grep_string, {
+        utils.keymap_set("n", "<leader>w", telescope.grep_string, {
             desc = "Find content by word under cursor",
         })
 
         -- Jump cursor forward <C-i>
         -- Jump cursor backward <C-o>
 
-        utils.keymap_set("n", "<leader>fu", ":Telescope lsp_references<CR>", { desc = "Find usage" })
-        utils.keymap_set("n", "<leader>fe", ":Telescope diagnostics bufnr=0<CR>", { desc = "Show buffer diagnostics" })
+        utils.keymap_set("n", "<leader>u", ":Telescope lsp_references<CR>", { desc = "Find usage" })
+        utils.keymap_set("n", "<leader>e", ":Telescope diagnostics bufnr=0<CR>", { desc = "Show buffer diagnostics" })
 
-        utils.keymap_set("n", "<leader>fd", ":Telescope lsp_definitions<CR>", { desc = "Find definition" })
-        utils.keymap_set("n", "<leader>ft", ":Telescope lsp_type_definitions<CR>", { desc = "Find type definition" })
-        utils.keymap_set("n", "<leader>fi", ":Telescope lsp_implementations<CR>", { desc = "Find to implementation" })
+        utils.keymap_set("n", "<leader>d", ":Telescope lsp_definitions<CR>", { desc = "Find definition of var" })
+        utils.keymap_set("n", "<leader>D", ":Telescope lsp_type_definitions<CR>", { desc = "Find definition of var type" })
+        utils.keymap_set("n", "<leader>i", ":Telescope lsp_implementations<CR>", { desc = "Find to implementation" })
     end,
 }

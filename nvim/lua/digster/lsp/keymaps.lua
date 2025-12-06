@@ -2,7 +2,7 @@ local utils = require("digster.utils")
 
 local function set_global_keymaps(client, buffer)
     utils.keymap_set("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename symbol" })
-    utils.keymap_set("n", "<leader>d", vim.lsp.buf.hover, { desc = "Show docs" })
+    utils.keymap_set("n", "<leader>h", vim.lsp.buf.hover, { desc = "Hover docs" })
 
     utils.keymap_set("n", "<leader>v", function()
         -- Attempt to format a document with both builtin lsp and conform

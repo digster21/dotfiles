@@ -8,9 +8,9 @@ return {
     },
     cmd = "Neotree",
     keys = {
-        { "<leader>tt", "<cmd>Neotree filesystem focus left<CR>",        desc = "Focus filesystem tree" },
-        { "<leader>tg", "<cmd>Neotree git_status focus left<CR>",        desc = "Focus gitfiles tree" },
-        { "<leader>tf", "<cmd>Neotree document_symbols focus right<CR>", desc = "Focus document symbols" },
+        { "<leader>t", "<cmd>Neotree filesystem toggle left<CR>",        desc = "Focus filesystem tree" },
+        { "<leader>g", "<cmd>Neotree git_status toggle left<CR>",        desc = "Focus gitfiles tree" },
+        { "<leader>y", "<cmd>Neotree document_symbols toggle right<CR>", desc = "Focus document symbols" },
     },
     opts = {
         close_if_last_window = true,
