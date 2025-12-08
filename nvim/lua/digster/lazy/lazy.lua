@@ -20,5 +20,6 @@ require("lazy").setup({
     { import = "digster.lazy.plugins.gitsigns" },
     { import = "digster.lazy.plugins.indent" },
     { import = "digster.lazy.plugins.eyeliner" },
+    { import = "digster.lazy.plugins.comment" },
     { import = "digster.lazy.themes.tokyonight" },
 })
