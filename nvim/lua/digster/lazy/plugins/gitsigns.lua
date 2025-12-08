@@ -26,7 +26,7 @@ return {
         },
         attach_to_untracked = true,
         on_attach = function()
-            if utils.is_git_repo() then
+            if not utils.is_git_repo() then
                 return
             end
 
