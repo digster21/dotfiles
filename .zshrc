@@ -94,7 +94,7 @@ if [ ! -d "$PYENV_ROOT" ]; then
     git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
 fi
 export PYENV_ROOT
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+[[ -d $PYENV_ROOT/bin ]] && add_PATH "$PYENV_ROOT/bin"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 plugins+=(pyenv)
@@ -142,3 +142,7 @@ bindkey '^x' autosuggest-clear
 
 # Bash aliases
 [ -f "${HOME}/.bash_aliases" ] && . "${HOME}/.bash_aliases"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -3,6 +3,38 @@
 [ -n "$SHELLRC_GUARD" ] && return
 SHELLRC_GUARD=1
 
+add_PATH() {
+    local debug=false
+    local dry_run=false
+    local arg=""
+
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            --debug) debug=true ;;
+            --dry-run)  dry_run=true; debug=true ;;
+            *)          arg="$1" ;;
+        esac
+        shift
+    done
+
+    [ -z "$arg" ] && { echo "no path arg"; return 1; }
+
+    case ":$PATH:" in
+        *":$arg:"*)
+            $debug && echo "duplicate >> $arg"
+            return 0
+            ;;
+    esac
+
+    if $dry_run; then
+        echo "PATH update (dry-run) >> $arg:$PATH"
+        return 0
+    fi
+
+    PATH="$arg:$PATH"
+    $debug && echo "PATH update >> $PATH"
+}
+
 # Add Editor preference
 if command -v nvim >/dev/null 2>&1; then
     EDITOR=nvim
@@ -35,5 +67,16 @@ if [ -n "$ZSH_VERSION" ]; then
     setopt APPEND_HISTORY
 fi
 
-# Extend Path
-export PATH="/home/$USER/bin:$PATH"
+# NVM bootstrap
+NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "$HOME/.nvm" || printf %s "$XDG_CONFIG_HOME/nvm")"
+if [ ! -d "$NVM_DIR" ] || [ -z "$(ls -A "$NVM_DIR" 2>/dev/null)" ]; then
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+fi
+export NVM_DIR="$NVM_DIR"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+if ! nvm version 'lts/*' >/dev/null 2>&1; then
+    nvm install --lts
+    nvm alias default 'lts/*'
+fi
+
+add_PATH "$HOME/bin"
