@@ -2,12 +2,15 @@ local utils = require("digster.utils")
 
 
 local keys = {
-    { "<leader>t", "<cmd>Neotree filesystem toggle left<CR>",        desc = "Focus filesystem tree" },
-    { "<leader>y", "<cmd>Neotree document_symbols toggle right<CR>", desc = "Focus document symbols" },
+    { "<leader>T", "<cmd>Neotree filesystem toggle left<CR>",        desc = "Toggle filesystem tree" },
+    { "<leader>t", "<cmd>Neotree filesystem focus left<CR>",        desc = "Focus filesystem tree" },
+    { "<leader>Y", "<cmd>Neotree document_symbols toggle right<CR>", desc = "Toggle document symbols" },
+    { "<leader>y", "<cmd>Neotree document_symbols focus right<CR>", desc = "Focus document symbols" },
 }
 
 if utils.is_git_repo() then
-    table.insert(keys, { "<leader>g", "<cmd>Neotree git_status toggle left<CR>", desc = "Focus gitfiles tree" })
+    table.insert(keys, { "<leader>G", "<cmd>Neotree git_status toggle left<CR>", desc = "Toggle gitfiles tree" })
+    table.insert(keys, { "<leader>g", "<cmd>Neotree git_status focus left<CR>", desc = "Focus gitfiles tree" })
 end
 
 return {
