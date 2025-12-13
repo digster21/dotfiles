@@ -89,22 +89,23 @@ if [ ! -d "$PLUG_DIR_YOUSHOULDUSE" ]; then
 fi
 plugins+=(you-should-use)
 
-PYENV_ROOT="$HOME/.pyenv"
-if [ ! -d "$PYENV_ROOT" ]; then
-    git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
+if ! command -v pyenv >/dev/null 2>&1; then
+    PYENV_ROOT="$HOME/.pyenv"
+    export PYENV_ROOT
+    if [ ! -d "$PYENV_ROOT" ]; then
+        git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
+    fi
+
+    PYENV_PLUG_DIR_VENV="$PYENV_ROOT/plugins/pyenv-virtualenv"
+    if [ ! -d "$PYENV_PLUG_DIR_VENV" ]; then
+        git clone "https://github.com/pyenv/pyenv-virtualenv.git" "$PYENV_PLUG_DIR_VENV"
+    fi
+
+    [[ -d $PYENV_ROOT/bin ]] && add_PATH "$PYENV_ROOT/bin"
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
 fi
-export PYENV_ROOT
-[[ -d $PYENV_ROOT/bin ]] && add_PATH "$PYENV_ROOT/bin"
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
 plugins+=(pyenv)
-
-PYENV_PLUG_DIR_VENV="$(pyenv root)/plugins/pyenv-virtualenv"
-if [ ! -d "$PYENV_PLUG_DIR_VENV" ]; then
-    git clone "https://github.com/pyenv/pyenv-virtualenv.git" "$PYENV_PLUG_DIR_VENV"
-fi
-eval "$(pyenv virtualenv-init -)"
-
 
 source $ZSH/oh-my-zsh.sh
 
