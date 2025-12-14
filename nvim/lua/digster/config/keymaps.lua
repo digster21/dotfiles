@@ -2,8 +2,22 @@ vim.g.mapleader = " "
 
 local utils = require("digster.utils")
 
-utils.keymap_set("i", "<leader>q", "<ESC>", { desc = "Exit insert mode" })
-utils.keymap_set("s", "<leader>q", "<ESC>", { desc = "Exit select mode" })
-utils.keymap_set("v", "<leader>q", "<ESC>", { desc = "Exit visual mode" })
-utils.keymap_set("n", "<leader>c", ":nohl<CR>", { desc = "Clear search highlights" })
+utils.keymap_set("i", "qq", "<ESC>", { desc = "Escape insert mode" })
+utils.keymap_set("s", "qq", "<ESC>", { desc = "Escape select mode" })
+utils.keymap_set("v", "qq", "<ESC>", { desc = "Escape visual mode" })
+utils.keymap_set("t", "qq", "<C-\\><C-n>", { desc = "Escape terminal insert mode" })
 utils.keymap_set("n", "x", '"_x', { desc = "Delete single character without copying" })
+
+utils.keymap_set("n", "<leader>cs", ":nohl<CR>", { desc = "Clear search highlights" })
+utils.keymap_set(
+    'n',
+    '<leader>cv',
+    [[<cmd>vsplit | term<cr>A]],
+    { desc = 'Open terminal in vertical split' }
+)
+utils.keymap_set(
+    'n',
+    '<leader>ch',
+    [[<cmd>split | term<cr>A]],
+    { desc = 'Open terminal in horizontal split' }
+)
