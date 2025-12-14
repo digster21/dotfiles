@@ -22,4 +22,7 @@ require("lazy").setup({
     { import = "digster.lazy.plugins.eyeliner" },
     { import = "digster.lazy.plugins.comment" },
     { import = "digster.lazy.themes.tokyonight" },
+    { import = "digster.lazy.themes.kanagawa" },
 })
+
+vim.cmd.colorscheme("tokyonight")
