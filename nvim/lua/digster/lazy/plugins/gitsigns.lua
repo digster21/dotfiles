@@ -36,21 +36,24 @@ return {
             utils.keymap_set({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Git select hunk" })
 
             -- Diffs
-            utils.keymap_set("n", "<leader>j", gs.preview_hunk_inline, { desc = "Git preview inline hunk" })
-            utils.keymap_set("n", "<leader>k", function() gs.diffthis("~") end, { desc = "Git diff HEAD~" })
-            utils.keymap_set("n", "<leader>l", gs.diffthis, { desc = "Git diff staged" })
+            utils.keymap_set("n", "<leader>p", gs.preview_hunk_inline, { desc = "Git preview inline hunk" })
+            utils.keymap_set("n", "<leader>o", function() gs.diffthis("~") end, { desc = "Git diff HEAD~" })
+            utils.keymap_set("n", "<leader>O", gs.diffthis, { desc = "Git diff staged" })
 
-            -- Staging/Unstaging/Resetting
-            utils.keymap_set("n", "<leader>m", ":Gitsigns reset_hunk<CR>", { desc = "Git reset hunk" })
-            utils.keymap_set("n", "<leader>n", ":Gitsigns stage_hunk<CR>", { desc = "Git stage hunk" })
-            utils.keymap_set("n", "<leader>b", gs.undo_stage_hunk, { desc = "Git unstage hunk" })
-
-            utils.keymap_set("n", "<leader>M", gs.reset_buffer, { desc = "Git reset buffer" })
-            utils.keymap_set("n", "<leader>N", gs.stage_buffer, { desc = "Git stage buffer" })
-            utils.keymap_set("n", "<leader>B", function()
+            -- Unstaging
+            utils.keymap_set("n", "<leader>j", gs.undo_stage_hunk, { desc = "Git unstage hunk" })
+            utils.keymap_set("n", "<leader>J", function()
                 local file = vim.fn.expand("%:p")
                 vim.cmd("silent !git reset HEAD " .. file)
             end, { desc = "Git unstage buffer" })
+
+            -- Staging
+            utils.keymap_set("n", "<leader>k", ":Gitsigns stage_hunk<CR>", { desc = "Git stage hunk" })
+            utils.keymap_set("n", "<leader>K", gs.stage_buffer, { desc = "Git stage buffer" })
+
+            -- Resetting
+            utils.keymap_set("n", "<leader>l", ":Gitsigns reset_hunk<CR>", { desc = "Git reset hunk" })
+            utils.keymap_set("n", "<leader>L", gs.reset_buffer, { desc = "Git reset buffer" })
         end,
     },
 }
