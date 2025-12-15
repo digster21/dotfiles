@@ -56,5 +56,7 @@ return {
         utils.keymap_set("n", "<leader>D", ":Telescope lsp_type_definitions<CR>",
             { desc = "Find definition of var type" })
         utils.keymap_set("n", "<leader>i", ":Telescope lsp_implementations<CR>", { desc = "Find to implementation" })
+
+        utils.keymap_set("n", "<leader>cl", ":Telescope colorscheme<CR>", { desc = "Change look using picker" })
     end,
 }
