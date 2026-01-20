@@ -25,4 +25,4 @@ require("lazy").setup({
     { import = "digster.lazy.themes.kanagawa" },
 })
 
-vim.cmd.colorscheme("tokyonight")
+vim.cmd.colorscheme("kanagawa")

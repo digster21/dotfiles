@@ -3,7 +3,7 @@ return {
     lazy = true,
     config = function()
         require("kanagawa").setup({
-            theme = "lotus", -- wave, dragon, lotus
+            theme = "wave", -- wave, dragon, lotus
         })
     end,
 }
