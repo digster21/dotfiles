@@ -1,4 +1,6 @@
-alias glo2='git log --oneline --decorate -20'
-alias glog2='git log --oneline --decorate --graph -20'
+alias glot='git log --oneline --decorate -20'
+alias glof='git log --oneline --decorate -5'
+alias glogt='git log --oneline --decorate --graph -20'
+alias glogf='git log --oneline --decorate --graph -5'
 alias nrf302='nrfutil sdk-manager toolchain launch --ncs-version v3.0.2 --shell'
 alias ccb='xclip -selection clipbaord'
