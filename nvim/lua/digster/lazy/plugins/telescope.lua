@@ -50,7 +50,11 @@ return {
         -- Jump cursor backward <C-o>
 
         utils.keymap_set("n", "<leader>u", ":Telescope lsp_references<CR>", { desc = "Find usage" })
-        utils.keymap_set("n", "<leader>e", ":Telescope diagnostics bufnr=0<CR>", { desc = "Show buffer diagnostics" })
+
+        utils.keymap_set("n", "<leader>E", ":Telescope diagnostics bufnr=0<CR>", { desc = "Show buffer diagnostics" })
+        utils.keymap_set("n", "<leader>e", function()
+            vim.diagnostic.open_float(nil, { scope = "line" })
+        end, { desc = "Show line diagnostics" })
 
         utils.keymap_set("n", "<leader>d", ":Telescope lsp_definitions<CR>", { desc = "Find definition of var" })
         utils.keymap_set("n", "<leader>D", ":Telescope lsp_type_definitions<CR>",
