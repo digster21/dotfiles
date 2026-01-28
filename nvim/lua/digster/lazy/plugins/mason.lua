@@ -1,5 +1,11 @@
 return {
     {
+        -- TODO:
+        -- improve loadtime with cmd -> Lazy cmd Mason
+        -- Remove mason tool installer as a dependency (will break python formatter + linter)
+        -- Fix python formatter + linter
+
+
         "mason-org/mason.nvim",
         dependencies = {
             "mason-org/mason-lspconfig.nvim",
