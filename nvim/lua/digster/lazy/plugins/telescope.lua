@@ -8,7 +8,7 @@ return {
         local ts_builtin = require("telescope.builtin")
         local ts_theme = require("telescope.themes")
 
-        utils.keymap_set("n", "<leader>a", function()
+        utils.keymap_set("n", "<leader>F", function()
             ts_builtin.find_files({ hidden = true })
         end, {
             desc = "Find files by name",
