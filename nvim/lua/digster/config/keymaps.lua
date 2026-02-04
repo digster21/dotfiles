@@ -11,13 +11,13 @@ utils.keymap_set("n", "x", '"_x', { desc = "Delete single character without copy
 utils.keymap_set("n", "<leader>c", ":nohl<CR>", { desc = "Clear search highlights" })
 utils.keymap_set(
     'n',
-    '<leader>|',
+    '<leader>%',
     [[<cmd>vsplit | term<cr>A]],
     { desc = 'Open terminal in vertical split' }
 )
 utils.keymap_set(
     'n',
-    '<leader>_',
+    '<leader>"',
     [[<cmd>split | term<cr>A]],
     { desc = 'Open terminal in horizontal split' }
 )
