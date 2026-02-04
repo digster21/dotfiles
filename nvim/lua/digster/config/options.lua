@@ -8,8 +8,10 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.autoindent = true
 
--- Line wrapping
+-- Scroll behaviour
 vim.opt.wrap = true
+vim.opt.sidescrolloff = 10
+vim.opt.scrolloff = 10
 
 -- Search
 vim.opt.ignorecase = true
