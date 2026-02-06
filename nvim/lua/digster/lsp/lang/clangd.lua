@@ -1,18 +1,8 @@
-local utils = require("digster.utils")
+vim.lsp.config.clangd = {
+    root_markers = { "compile_commands.json" },
+    workspace_required = true,
+    filetypes = { "c", "cpp", "h", "hpp" },
+    cmd = { "clangd", "--clang-tidy" },
+}
 
-local cmd = { "clangd", "--clang-tidy" }
-local compile_cmd_dir =
-    utils.resolve_pathdir_from_name_in_dir("compile_commands.json", vim.loop.cwd(), 6)
-
-if compile_cmd_dir then
-    table
-        .insert(cmd, "--compile-commands-dir=" .. compile_cmd_dir)
-
-    vim.lsp.config.clangd =
-    {
-        filetypes = { "c", "cpp", "h", "hpp" },
-        cmd = cmd,
-    }
-
-    vim.lsp.enable("clangd")
-end
+vim.lsp.enable("clangd")
