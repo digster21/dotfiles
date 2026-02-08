@@ -15,6 +15,7 @@ return {
                     "clangd",
                     "eslint",
                     "ts_ls",
+                    "marksman",
                 },
                 automatic_installation = true,
             })
@@ -25,9 +26,11 @@ return {
         dependencies = { "mason-org/mason.nvim" },
         config = function()
             require("mason-tool-installer").setup({
-                ensure_installed = { "black" },
-                auto_update = true,
-                run_on_start = true,
+                ensure_installed = {
+                    "black",
+                    "prettier",
+                },
+                automatic_installation = true,
             })
         end,
     },
