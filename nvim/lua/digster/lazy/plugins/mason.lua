@@ -26,8 +26,7 @@ return {
         config = function()
             require("mason-tool-installer").setup({
                 ensure_installed = { "black" },
-                auto_update = true,
-                run_on_start = true,
+                automatic_installation = true,
             })
         end,
     },
