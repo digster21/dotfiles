@@ -35,8 +35,12 @@ return {
             -- Hunk selection with motions
             utils.keymap_set({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Git select hunk" })
 
+            -- Navigation
+            utils.keymap_set("n", "<leader>n", gs.next_hunk, { desc = "Git goto next hunk" })
+            utils.keymap_set("n", "<leader>p", gs.prev_hunk, { desc = "Git goto next hunk" })
+
             -- Diffs
-            utils.keymap_set("n", "<leader>p", gs.preview_hunk_inline, { desc = "Git preview inline hunk" })
+            utils.keymap_set("n", "<leader>H", gs.preview_hunk_inline, { desc = "Git preview inline hunk" })
             utils.keymap_set("n", "<leader>o", function() gs.diffthis("~") end, { desc = "Git diff HEAD~" })
             utils.keymap_set("n", "<leader>O", gs.diffthis, { desc = "Git diff staged" })
 
