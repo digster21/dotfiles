@@ -10,6 +10,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     { import = "digster.lazy.plugins.mason" },
+    { import = "digster.lazy.plugins.lualine" },
     { import = "digster.lazy.plugins.treesitter" },
     { import = "digster.lazy.plugins.telescope" },
     { import = "digster.lazy.plugins.neotree" },
