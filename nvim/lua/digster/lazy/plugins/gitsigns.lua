@@ -39,7 +39,7 @@ return {
 
             -- Navigation
             utils.keymap_set("n", "<leader>n", gs.next_hunk, { desc = "Git goto next hunk" })
-            utils.keymap_set("n", "<leader>p", gs.prev_hunk, { desc = "Git goto next hunk" })
+            utils.keymap_set("n", "<leader>p", gs.prev_hunk, { desc = "Git goto prev hunk" })
 
             -- Diffs
             utils.keymap_set("n", "<leader>H", function() gs.preview_hunk() end,
