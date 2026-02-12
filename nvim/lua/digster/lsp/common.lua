@@ -5,10 +5,15 @@ local function set_global_keymaps(client, buffer)
     utils.keymap_set("n", "<leader>h", vim.lsp.buf.hover, { desc = "Hover docs" })
 
     utils.keymap_set("n", "<leader>v", function()
-        -- Attempt to format a document with both builtin lsp and conform
-        -- Hopefully there is no overlap in formatters
-        vim.lsp.buf.format()
-        require("conform").format()
+        local conform = require("conform")
+
+        local conform_fmtrs = conform.formatters_by_ft[vim.bo.filetype]
+
+        if conform_fmtrs and #conform_fmtrs > 0 then
+            conform.format()
+        else
+            vim.lsp.buf.format()
+        end
     end, { buffer = buffer, desc = "Format buffer" })
 end
 
