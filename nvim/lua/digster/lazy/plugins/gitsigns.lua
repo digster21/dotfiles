@@ -42,7 +42,7 @@ return {
             utils.keymap_set("n", "<leader>p", gs.prev_hunk, { desc = "Git goto next hunk" })
 
             -- Diffs
-            utils.keymap_set("n", "<leader>H", function() gs.preview_hunk_inline() end,
+            utils.keymap_set("n", "<leader>H", function() gs.preview_hunk() end,
                 { desc = "Git preview inline hunk" })
 
             -- Staging
