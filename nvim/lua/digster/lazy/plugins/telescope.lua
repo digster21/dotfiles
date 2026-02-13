@@ -2,28 +2,30 @@ local utils = require("digster.utils")
 
 return {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-ui-select.nvim" },
     config = function()
-        local telescope = require("telescope.builtin")
+        local ts = require("telescope")
+        local ts_builtin = require("telescope.builtin")
+        local ts_theme = require("telescope.themes")
 
-        utils.keymap_set("n", "<leader>a", function()
-            telescope.find_files({ hidden = true })
+        utils.keymap_set("n", "<leader>F", function()
+            ts_builtin.find_files({ hidden = true })
         end, {
             desc = "Find files by name",
         })
 
         utils.keymap_set("n", "<leader>f", function()
             if utils.is_git_repo() then
-                telescope.git_files({ hidden = true, show_untracked = true })
+                ts_builtin.git_files({ hidden = true, show_untracked = true })
             else
-                telescope.find_files({ hidden = true })
+                ts_builtin.find_files({ hidden = true })
             end
         end, {
             desc = "Find git files by name",
         })
 
         utils.keymap_set("n", "<leader>S", function()
-            telescope.live_grep({
+            ts_builtin.live_grep({
                 additional_args = function()
                     return { "--hidden", "--no-ignore" }
                 end,
@@ -33,7 +35,7 @@ return {
         })
 
         utils.keymap_set("n", "<leader>s", function()
-            telescope.live_grep({
+            ts_builtin.live_grep({
                 additional_args = function()
                     return { "--hidden", "--no-ignore", "--fixed-strings" }
                 end,
@@ -42,7 +44,7 @@ return {
             desc = "Find content by string (ripgrep)",
         })
 
-        utils.keymap_set("n", "<leader>w", telescope.grep_string, {
+        utils.keymap_set("n", "<leader>w", ts_builtin.grep_string, {
             desc = "Find content by word under cursor",
         })
 
@@ -62,5 +64,15 @@ return {
         utils.keymap_set("n", "<leader>i", ":Telescope lsp_implementations<CR>", { desc = "Find to implementation" })
 
         utils.keymap_set("n", "<leader>0", ":Telescope colorscheme<CR>", { desc = "Change look using picker" })
+
+        ts.setup({
+            extensions = {
+                ["ui-select"] = {
+                    ts_theme.get_dropdown()
+                }
+            },
+        })
+
+        ts.load_extension("ui-select")
     end,
 }
