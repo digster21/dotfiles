@@ -43,7 +43,7 @@ return {
 
             -- Diffs
             utils.keymap_set("n", "<leader>H", function() gs.preview_hunk() end,
-                { desc = "Git preview inline hunk" })
+                { desc = "Git preview hunk diff" })
 
             -- Staging
             utils.keymap_set({ "n", "v" }, "<leader>k", ":Gitsigns stage_hunk<cr>", { desc = "Git stage/unstage hunk" })
