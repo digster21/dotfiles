@@ -1,0 +1,2 @@
+[note]
+filename = "{{format-date now '%Y-%m-%d'}}-{{slug title}}"
