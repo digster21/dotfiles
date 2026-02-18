@@ -2,12 +2,13 @@
 type: todo
 ---
 
-# {{ format-date (date "today") "short" }} {{ title }}
+# {{ title }}
+
+**date:**: {{format-date now '%d-%m-%Y'}}
 
 ## Tasks
 
-- [ ] FOO
+- [ ] Create tasks
 
 ## Notes
 
-- BAR

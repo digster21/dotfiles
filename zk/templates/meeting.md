@@ -8,7 +8,7 @@ type: meeting
 
 | Version | Date       | Description     |
 | ------- | ---------- | --------------- |
-| 0.1     | {{ format-date (date "today") "short" }} | Create document |
+| 0.1     | {{format-date now '%d-%m-%Y'}} | Create document |
 
 ### Attendees
 
