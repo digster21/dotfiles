@@ -24,5 +24,5 @@ type: meeting
 
 ## Action Items
 
-| Description | Assignee | Priority | Due date |
+| Description | Assignee | Priority | Due Date |
 | ----------- | -------- | -------- | -------- |
