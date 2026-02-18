@@ -2,5 +2,11 @@ alias glot='git log --oneline --decorate -20'
 alias glof='git log --oneline --decorate -5'
 alias glogt='git log --oneline --decorate --graph -20'
 alias glogf='git log --oneline --decorate --graph -5'
+
 alias nrf302='nrfutil sdk-manager toolchain launch --ncs-version v3.0.2 --shell'
+
 alias ccb='xclip -selection clipbaord'
+
+alias daily="zk new --template todo.md --title 'Daily Tasks'"
+alias ntodo="zk new --template todo.md --title"
+alias nmeeting="zk new --template meeting.md --title"

@@ -4,7 +4,7 @@ type: todo
 
 # {{ title }}
 
-**date:**: {{format-date now '%d-%m-%Y'}}
+**Date:**: {{format-date now '%d-%m-%Y'}}
 
 ## Tasks
 
