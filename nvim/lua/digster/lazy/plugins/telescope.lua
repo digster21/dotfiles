@@ -27,7 +27,7 @@ return {
         utils.keymap_set("n", "<leader>S", function()
             ts_builtin.live_grep({
                 additional_args = function()
-                    return { "--hidden", "--no-ignore" }
+                    return { "--hidden" }
                 end,
             })
         end, {
@@ -37,7 +37,7 @@ return {
         utils.keymap_set("n", "<leader>s", function()
             ts_builtin.live_grep({
                 additional_args = function()
-                    return { "--hidden", "--no-ignore", "--fixed-strings" }
+                    return { "--hidden", "--fixed-strings" }
                 end,
             })
         end, {
