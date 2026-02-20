@@ -1,6 +1,7 @@
----
+<!--
+id: {{id}}
 type: meeting
----
+-->
 
 # {{ title }}
 

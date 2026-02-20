@@ -1,2 +1,4 @@
 [note]
 filename = "{{format-date now '%Y-%m-%d-%a'}}-{{slug title}}"
+id-case = "upper"
+id-length = 20

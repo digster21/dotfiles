@@ -1,6 +1,7 @@
----
+<!--
+id: {{id}}
 type: todo
----
+-->
 
 # {{ title }}
 
@@ -9,6 +10,6 @@ type: todo
 ## Tasks
 
 - [ ] Create tasks
+- [ ] Check communications (emails, mesages, calls, etc)
 
 ## Notes
-
