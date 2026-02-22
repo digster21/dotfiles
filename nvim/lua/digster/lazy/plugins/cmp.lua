@@ -7,8 +7,8 @@ return {
         "hrsh7th/cmp-path",
     },
     config = function()
-        local popup_menu_height = 10    -- Max Items shown (scrollable)
-        local popup_menu_col_width = 60 -- Max Item col width (truncated)
+        local popup_menu_height = 5     -- Max items shown (scrollable)
+        local popup_menu_col_width = 60 -- Max item col width (truncated)
 
         vim.opt.pumheight = popup_menu_height
 
@@ -22,8 +22,8 @@ return {
                 ["<C-k>"] = cmp.mapping.select_prev_item(),             -- Selection Prev
                 ['<C-f>'] = cmp.mapping.scroll_docs(4),                 -- Documentation scroll forwards
                 ['<C-b>'] = cmp.mapping.scroll_docs(-4),                -- Documentation scroll Backwards
-                ["<C-Space>"] = cmp.mapping.confirm({ select = true }), -- Autocomplete (matches zsh auto-suggestions)
-                ["<ENTER>"] = cmp.mapping.confirm({ select = true }),   -- Autocomplete (matches zsh auto-suggestions)
+                ["<C-Space>"] = cmp.mapping.confirm({ select = true }), -- Autocomplete (matches zsh auto-suggestion keybind)
+                ["<ENTER>"] = cmp.mapping.confirm({ select = true }),   -- Autocomplete (matches vscode selection)
             }),
             sources = {
                 { name = "nvim_lsp" },
