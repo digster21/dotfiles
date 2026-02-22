@@ -10,8 +10,8 @@ vim.opt.autoindent = true
 
 -- Scroll behaviour
 vim.opt.wrap = true
-vim.opt.sidescrolloff = 10
-vim.opt.scrolloff = 10
+vim.opt.sidescrolloff = 8
+vim.opt.scrolloff = 8
 
 -- Search
 vim.opt.ignorecase = true
