@@ -38,8 +38,10 @@ return {
             utils.keymap_set({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Git select hunk" })
 
             -- Navigation
-            utils.keymap_set("n", "<leader>n", gs.next_hunk, { desc = "Git goto next hunk" })
-            utils.keymap_set("n", "<leader>p", gs.prev_hunk, { desc = "Git goto prev hunk" })
+            utils.keymap_set("n", "<leader>n", function() gs.nav_hunk("next", { target = "all" }) end,
+                { desc = "Git goto next hunk" })
+            utils.keymap_set("n", "<leader>N", function() gs.nav_hunk("prev", { target = "all" }) end,
+                { desc = "Git goto prev hunk" })
 
             -- Diffs
             utils.keymap_set("n", "<leader>H", function() gs.preview_hunk() end,
