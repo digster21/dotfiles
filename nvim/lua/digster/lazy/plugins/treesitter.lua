@@ -21,6 +21,7 @@ return {
             "luap",
             "markdown",
             "markdown_inline",
+            "rst",
             "printf",
             "python",
             "query",
