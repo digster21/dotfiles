@@ -3,7 +3,11 @@ alias glof='git log --oneline --decorate -5'
 alias glogt='git log --oneline --decorate --graph -20'
 alias glogf='git log --oneline --decorate --graph -5'
 
-alias nrf302='nrfutil sdk-manager toolchain launch --ncs-version v3.0.2 --shell'
+alias nrfusearch='nrfutil sdk-manager search'
+alias nrfulist='nrfutil sdk-manager list'
+alias nrfuinstall='nrfutil sdk-manager install'
+alias nrfuuninstall='nrfutil sdk-manager uninstall'
+alias nrfushell='_nrf_shell() { nrfutil sdk-manager toolchain launch --ncs-version "$1" --shell; }; _nrf_shell'
 
 alias ccb='xclip -selection clipbaord'
 
