@@ -2,7 +2,7 @@ local utils = require("digster.utils")
 
 
 local keys = {
-    { "<leader>t", "<cmd>Neotree filesystem focus left<CR>",        desc = "Focus filesystem tree" },
+    { "<leader>t", "<cmd>Neotree filesystem focus left<CR>", desc = "Focus filesystem tree" },
 }
 
 if utils.is_git_repo() then
@@ -35,6 +35,9 @@ return {
             }
         },
         filesystem = {
+            follow_current_file = {
+                enabled = true,
+            },
             filtered_items = {
                 visible = true,
                 hide_dotfiles = false,
