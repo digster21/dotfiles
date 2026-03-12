@@ -1,13 +1,6 @@
-local utils = require("digster.utils")
-
-
 local keys = {
     { "<leader>t", "<cmd>Neotree filesystem focus left<CR>", desc = "Focus filesystem tree" },
 }
-
-if utils.is_git_repo() then
-    table.insert(keys, { "<leader>T", "<cmd>Neotree git_status focus left<CR>", desc = "Focus gitfiles tree" })
-end
 
 return {
     "nvim-neo-tree/neo-tree.nvim",
