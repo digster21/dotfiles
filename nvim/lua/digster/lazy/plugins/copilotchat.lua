@@ -4,8 +4,8 @@ return {
         event = "VeryLazy",
         cmd = "CopilotChat",
         keys = {
-            { "<leader>a", "<cmd>CopilotChat<cr>",       desc = "Open CopilotChat" },
-            { "<leader>A", "<cmd>CopilotChatModels<cr>", desc = "Open CopilotChat Model Selection" },
+            { "<leader>y", "<cmd>CopilotChat<cr>",       desc = "Open CopilotChat" },
+            { "<leader>Y", "<cmd>CopilotChatModels<cr>", desc = "Open CopilotChat Model Selection" },
         },
         dependencies = {
             { "nvim-lua/plenary.nvim", branch = "master" },
