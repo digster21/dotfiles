@@ -32,7 +32,7 @@ return {
 
             local gs = package.loaded.gitsigns
 
-            -- using cmd for easier visual mode support
+            -- using cmd in some places for easier visual mode support
 
             -- Hunk selection with motions
             utils.keymap_set({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Git select hunk" })
@@ -44,8 +44,14 @@ return {
                 { desc = "Git goto prev hunk" })
 
             -- Diffs
-            utils.keymap_set("n", "<leader>H", function() gs.preview_hunk() end,
-                { desc = "Git preview hunk diff" })
+            utils.keymap_set("n", "<leader>pp", function() gs.preview_hunk() end,
+                { desc = "Git preview hunk inline" })
+
+            utils.keymap_set("n", "<leader>ph", function() gs.diffthis("HEAD") end,
+                { desc = "Git diff HEAD" })
+
+            utils.keymap_set("n", "<leader>pw", function() gs.toggle_word_diff() end,
+                { desc = "Git toggle word diff" })
 
             -- Staging
             utils.keymap_set({ "n", "v" }, "<leader>k", ":Gitsigns stage_hunk<cr>", { desc = "Git stage/unstage hunk" })
