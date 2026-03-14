@@ -4,6 +4,7 @@ return {
         formatters_by_ft = {
             python = { "black" },
             markdown = { "prettier" },
+            sh = { "beautysh" },
         },
     },
 }

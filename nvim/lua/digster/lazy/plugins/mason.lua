@@ -29,6 +29,7 @@ return {
                 ensure_installed = {
                     "black",
                     "prettier",
+                    "beautysh",
                 },
                 automatic_installation = true,
             })
