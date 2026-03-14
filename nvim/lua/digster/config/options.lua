@@ -9,7 +9,7 @@ vim.opt.expandtab = true
 vim.opt.autoindent = true
 
 -- Scroll behaviour
--- vim.opt.wrap = true
+vim.opt.wrap = false
 vim.opt.sidescrolloff = 8
 vim.opt.scrolloff = 8
 
