@@ -58,6 +58,10 @@ return {
             desc = "Find content by word under cursor",
         })
 
+        utils.keymap_set("n", "<leader>W", ts_builtin.spell_suggest, {
+            desc = "Find content by word under cursor",
+        })
+
         -- Jump cursor forward <C-i>
         -- Jump cursor backward <C-o>
 
