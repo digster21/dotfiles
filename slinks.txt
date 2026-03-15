@@ -6,5 +6,5 @@ nvim:$HOME/.config/nvim
 zk:$HOME/.config/zk
 .zshrc:$HOME/.zshrc
 .shellrc:$HOME/.shellrc
-scripts/ram_usage.sh:$HOME/bin/ram_usage
+scripts/ram-usage.sh:$HOME/bin/ram-usage
 scripts/batt_status.sh:$HOME/bin/batt_status
