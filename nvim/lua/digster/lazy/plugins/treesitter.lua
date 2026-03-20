@@ -39,6 +39,20 @@ return {
                 "csv",
             },
         },
+        config = function(_, opts)
+            require("nvim-treesitter").setup(opts)
+
+            -- Kickstart language highlighting
+            vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+                pattern = "*",
+                callback = function()
+                    local buf = vim.api.nvim_get_current_buf()
+                    if not vim.treesitter.highlighter.active[buf] then
+                        pcall(vim.treesitter.start, buf)
+                    end
+                end
+            })
+        end
     },
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
