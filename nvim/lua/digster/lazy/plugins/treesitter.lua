@@ -3,6 +3,7 @@ local utils = require("digster.utils")
 return {
     {
         "nvim-treesitter/nvim-treesitter",
+        branch = "master",
         build = ":TSUpdate",
         event = { "BufReadPre", "BufNewFile" },
         opts = {
