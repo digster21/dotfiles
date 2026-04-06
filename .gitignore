@@ -21,5 +21,3 @@ ssh/*
 .envrc
 .secrets
 
-# NVIM
-lazy-lock.json
