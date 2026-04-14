@@ -10,12 +10,6 @@ return {
         local ts_builtin = require("telescope.builtin")
         local ts_theme = require("telescope.themes")
 
-        utils.keymap_set("n", "<leader>F", function()
-            ts_builtin.find_files({ hidden = true })
-        end, {
-            desc = "Find files by name",
-        })
-
         utils.keymap_set("n", "<leader>f", function()
             if is_git_repo then
                 ts_builtin.git_files({ hidden = true, show_untracked = true })
