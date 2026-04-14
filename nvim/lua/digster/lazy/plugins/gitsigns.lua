@@ -55,8 +55,14 @@ return {
 
             -- Staging
             utils.keymap_set({ "n", "v" }, "<leader>k", ":Gitsigns stage_hunk<cr>", { desc = "Git stage/unstage hunk" })
-            utils.keymap_set("n", "<leader>K", function() gs.stage_buffer() end, { desc = "Git stage buffer" })
-            utils.keymap_set("n", "<leader>J", function() gs.reset_buffer_index() end, { desc = "Git unstage buffer" })
+            utils.keymap_set("n", "<leader>K", function()
+                local status = vim.b.gitsigns_status_dict or {}
+                if status and (status.added or 0) + (status.changed or 0) + (status.removed or 0) > 0 then
+                    gs.stage_buffer()
+                else
+                    gs.reset_buffer_index()
+                end
+            end, { desc = "Git stage/unstage buffer" })
 
             -- Resetting
             utils.keymap_set({ "n", "v" }, "<leader>l", function() gs.reset_hunk() end, { desc = "Git reset hunk" })
