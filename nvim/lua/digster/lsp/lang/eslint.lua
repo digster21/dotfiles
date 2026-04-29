@@ -1,8 +1,7 @@
-local utils = require("digster.utils")
-
 vim.lsp.config.eslint = {
     cmd = { "vscode-eslint-language-server", "--stdio" },
     filetypes = { "javascript", "typescript", "typescriptreact", "javascriptreact" },
+    root_markers = { "package.json", "tsconfig.json", ".eslintrc*", ".git" },
     settings = {
         codeAction = {
             disableRuleComment = {
@@ -31,8 +30,6 @@ vim.lsp.config.eslint = {
         run = "onType",
         useESLintClass = false,
         validate = "on",
-        workingDirectory = { mode = "location" },
-        workspaceFolder = utils.lsp_get_workspace(),
     }
 }
 

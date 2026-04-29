@@ -4,8 +4,6 @@ vim.lsp.config.json = {
     init_options = {
         provideFormatter = true,
     },
-
-    -- Add custom command to format entire document
     commands = {
         Format = {
             function()

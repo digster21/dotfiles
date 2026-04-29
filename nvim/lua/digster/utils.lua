@@ -89,14 +89,6 @@ function utils.resolve_pathdir_from_name_in_dir(filename, dirpath, max_depth)
     return nil
 end
 
-function utils.lsp_get_workspace()
-    local root = vim.fn.getcwd()
-    return {
-        name = vim.fn.fnamemodify(root, ":t"),
-        uri = vim.uri_from_fname(root),
-    }
-end
-
 -- Check if a path is inside a Git Repo.
 --
 -- Args:
