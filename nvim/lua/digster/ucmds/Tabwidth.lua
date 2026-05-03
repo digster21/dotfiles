@@ -3,9 +3,9 @@ local Tabwidth = {}
 --- Print the configured indentation (shiftwidth, tabstop, and softtabstop).
 --- If they are all the same, only prints the shiftwidth.
 function Tabwidth.print()
-    local sw = vim.opt.shiftwidth:get()
-    local ts = vim.opt.tabstop:get()
-    local sts = vim.opt.softtabstop:get()
+    local sw = vim.o.shiftwidth
+    local ts = vim.o.tabstop
+    local sts = vim.o.softtabstop
     if sw == ts and sw == sts then
         print(sw)
     else
@@ -16,20 +16,22 @@ end
 --- Set the configured indentation (shiftwidth, tabstop, softtabstop) to a given value.
 ---@param width number Width to configure.
 function Tabwidth.set(width)
-    vim.opt.shiftwidth = width
-    vim.opt.tabstop = width
-    vim.opt.softtabstop = width
+    vim.o.shiftwidth = width
+    vim.o.tabstop = width
+    vim.o.softtabstop = width
 end
 
 --- Setup Tabwidth.
----@param initial_width number Initial width to configure
-function Tabwidth.setup(initial_width)
-    -- Configure initial width
-    Tabwidth.set(initial_width)
+---@param opts? {width?: number} Setup options
+function Tabwidth.setup(opts)
+    if opts then
+        -- Configure initial width
+        Tabwidth.set(opts.width)
+    end
 
     -- Configure User command
-    vim.api.nvim_create_user_command("Tabwidth", function(opts)
-        local width = tonumber(opts.args)
+    vim.api.nvim_create_user_command("Tabwidth", function(options)
+        local width = tonumber(options.args)
         if width then
             Tabwidth.set(width)
         else
