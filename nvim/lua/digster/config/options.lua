@@ -1,33 +1,33 @@
 -- Line numbers
-vim.opt.relativenumber = false
-vim.opt.number = true
+vim.o.relativenumber = false
+vim.o.number = true
 
 -- Indentation
-vim.opt.expandtab = true
-vim.opt.autoindent = true
+vim.o.expandtab = true
+vim.o.autoindent = true
 
 -- Scroll behaviour
-vim.opt.wrap = false
-vim.opt.sidescrolloff = 2
-vim.opt.scrolloff = 8
+vim.o.wrap = false
+vim.o.sidescrolloff = 2
+vim.o.scrolloff = 8
 
 -- Search
-vim.opt.ignorecase = true
-vim.opt.smartcase = true -- re-enables case sensitive search automatically
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
 -- Cursor line
-vim.opt.cursorline = true
+vim.o.cursorline = true
 
 -- Appearance
-vim.opt.background = "dark"
-vim.opt.signcolumn = "yes"
+vim.o.background = "dark"
+vim.o.signcolumn = "yes"
 
 -- Backspace
-vim.opt.backspace = "indent,eol,start"
+vim.o.backspace = "indent,eol,start"
 
 -- Clipboard
 vim.opt.clipboard:append("unnamedplus")
 
 -- View
-vim.opt.splitright = true
-vim.opt.splitbelow = true
+vim.o.splitright = true
+vim.o.splitbelow = true
