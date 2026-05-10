@@ -3,20 +3,29 @@ local Tabwidth = {}
 --- Print the configured indentation (shiftwidth, tabstop, and softtabstop).
 --- If they are all the same, only prints the shiftwidth.
 function Tabwidth.print()
-    local sw = vim.o.shiftwidth
-    local ts = vim.o.tabstop
-    local sts = vim.o.softtabstop
-    if sw == ts and sw == sts then
-        print(sw)
-    else
-        print(sw, ts, sts)
+    print(vim.inspect(Tabwidth.cfg))
+end
+
+--- Validate input width as a positive integer or nil.
+---@param width? number Width to sanitize
+---@return integer? width
+function Tabwidth.sanitize_width(width)
+    vim.validate({
+        width = { width, "number", true },
+    })
+
+    -- Ensure that width is a positive integer
+    if width == nil or width % 1 ~= 0 or width < 1 then
+        return nil
     end
+
+    return width
 end
 
 --- Set the configured indentation (shiftwidth, tabstop, softtabstop) to a given value.
----@param width number Width to configure.
-function Tabwidth.set_opt(width)
-    Tabwidth.opt.width = width
+---@param width integer Width to configure.
+function Tabwidth.set_default(width)
+    Tabwidth.cfg.width = width
 
     vim.o.shiftwidth = width
     vim.o.tabstop = width
@@ -25,33 +34,59 @@ end
 
 --- Set the configured indentation
 ---@param filetype string
----@param width number
+---@param width integer
 function Tabwidth.set_ft(filetype, width)
-    Tabwidth.opt.ft[filetype] = width
+    Tabwidth.cfg.ft[filetype] = width
 end
 
 --- Setup Tabwidth.
----@param opts? {width?: number} Setup options
+---@param opts? {default?: integer} Setup options
 function Tabwidth.setup(opts)
     -- Setup Tabwidth state
-    Tabwidth.opt = {}
-    Tabwidth.opt.ft = {}
+    Tabwidth.cfg = {}
+    Tabwidth.cfg.ft = {}
 
     -- Configure Tabwidth options
     if opts then
-        Tabwidth.set_opt(opts.width)
+        -- Set default width
+        opts.default = Tabwidth.sanitize_width(opts.default)
+        if opts.default then
+            Tabwidth.set_default(opts.default)
+        end
     end
 
     -- Configure User command
     vim.api.nvim_create_user_command("Tabwidth", function(options)
-        local width = tonumber(options.args)
-        if width then
-            Tabwidth.set_opt(width)
-        else
+        local argc = #options.fargs
+
+        if argc == 0 then
             Tabwidth.print()
+            return
+        end
+
+        if argc ~= 2 then
+            vim.notify("Invalid usage. Expects :Tabwidth <scope> <width>", vim.log.levels.ERROR)
+            return
+        end
+
+        local scope = options.fargs[1]
+        local width = Tabwidth.sanitize_width(tonumber(options.fargs[2]))
+
+        if width == nil then
+            vim.notify("Invalid usage. Expects <width> to be a positive integer", vim.log.levels.ERROR)
+            return
+        end
+
+        if scope == "default" then
+            Tabwidth.set_default(width)
+        elseif scope == "ft" then
+            Tabwidth.set_ft(vim.bo.filetype, width)
+        else
+            vim.notify("Invalid usage. Expects <scope> to be 'default' or 'ft'", vim.log.levels.ERROR)
+            return
         end
     end, {
-        nargs = "?"
+        nargs = "*"
     })
 end
 
