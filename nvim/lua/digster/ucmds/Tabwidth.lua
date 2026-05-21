@@ -45,6 +45,7 @@ function Tabwidth.setup(opts)
     -- Setup Tabwidth state
     Tabwidth.cfg = {}
     Tabwidth.cfg.ft = {}
+    Tabwidth.cfg.buf = {}
 
     -- Configure Tabwidth options
     if opts then
@@ -54,6 +55,16 @@ function Tabwidth.setup(opts)
             Tabwidth.set_default(opts.default)
         end
     end
+
+    -- Create Auto cmds
+    local augroup = vim.api.nvim_create_augroup("Tabwidth", { clear = true })
+
+    vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+        group = augroup,
+        callback = function(args)
+            Tabwidth.cfg.buf[args.buf] = args.file
+        end,
+    })
 
     -- Configure User command
     vim.api.nvim_create_user_command("Tabwidth", function(options)
