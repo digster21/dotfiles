@@ -134,20 +134,6 @@ function TabwidthAPI.print_global()
     TabwidthAPI.print_cfg("global: ", cfg)
 end
 
---- Set the configured tabwidth for a filetype.
---- @param ft string filetype
---- @param cfg TabwidthConfig
-function TabwidthAPI.set_filetype(ft, cfg)
-    TabwidthAPI.set_cfg(cfg, { filetype = ft })
-end
-
---- Print the indentation config for a filetype.
---- @param ft string filetype
-function TabwidthAPI.print_filetype(ft)
-    local cfg = TabwidthAPI.get_cfg({ filetype = ft })
-    TabwidthAPI.print_cfg(string.format("filetype (%s): ", ft), cfg)
-end
-
 --- Set the configured tabwidth for a buffer.
 --- @param buf integer buffer id
 --- @param cfg TabwidthConfig
@@ -160,6 +146,30 @@ end
 function TabwidthAPI.print_buffer(buf)
     local cfg = TabwidthAPI.get_cfg({ buf = buf })
     TabwidthAPI.print_cfg(string.format("buffer (%d): ", buf), cfg)
+end
+
+--- Set the configured tabwidth for a filetype.
+--- @param ft string filetype
+--- @param cfg TabwidthConfig
+function TabwidthAPI.set_filetype(ft, cfg)
+    -- should be a wrapper around buffer with auto commands
+end
+
+--- Print the indentation config for a filetype.
+--- @param ft string filetype
+function TabwidthAPI.print_filetype(ft)
+    -- should be a wrapper around buffer with auto commands
+end
+
+--- Parse command arguments
+--- @param width integer
+--- @return TabwidthConfig
+function TabwidthAPI.width_to_cfg(width)
+    return {
+        shiftwidth = width,
+        softtabstop = width,
+        tabstop = width,
+    }
 end
 
 --- Setup Tabwidth.
@@ -184,28 +194,23 @@ function TabwidthAPI.setup(opts)
     vim.api.nvim_create_user_command("Tabwidth", function(options)
         local argc = #options.fargs
 
+        if argc == 0 then
+            TabwidthAPI.print_global()
+        end
 
-        if argc ~= 2 then
-            vim.notify("Invalid usage. Expects :Tabwidth <scope> <width>", vim.log.levels.ERROR)
+        if argc > 1 then
+            vim.notify("Invalid usage. Expects :Tabwidth <width?>", vim.log.levels.ERROR)
             return
         end
 
-        local scope = options.fargs[1]
-        local width = TabwidthAPI.sanitize_width(tonumber(options.fargs[2]))
+        local width = TabwidthAPI.sanitize_width(tonumber(options.fargs[1]))
 
-        if width == nil then
+        if not width then
             vim.notify("Invalid usage. Expects <width> to be a positive integer", vim.log.levels.ERROR)
             return
         end
 
-        if scope == "default" then
-            TabwidthAPI.set_default(width)
-        elseif scope == "ft" then
-            TabwidthAPI.set_ft(vim.bo.filetype, width)
-        else
-            vim.notify("Invalid usage. Expects <scope> to be 'default' or 'ft'", vim.log.levels.ERROR)
-            return
-        end
+        TabwidthAPI.set_global(TabwidthAPI.width_to_cfg(width))
     end, {
         nargs = "*"
     })
