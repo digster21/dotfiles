@@ -131,7 +131,7 @@ end
 --- Print the global indentation config.
 function TabwidthAPI.print_default()
     local cfg = TabwidthAPI.get_cfg({ scope = "global" })
-    TabwidthAPI.print_cfg("", cfg)
+    TabwidthAPI.print_cfg("default: ", cfg)
 end
 
 --- Set the configured tabwidth for a buffer.
@@ -213,7 +213,37 @@ function TabwidthAPI.setup(opts)
 
         TabwidthAPI.set_default(TabwidthAPI.width_to_cfg(width))
     end, {
-        nargs = "*"
+        nargs = "*",
+        desc = "Preview or set the default tabwidth"
+    })
+
+    -- Configure User command
+    vim.api.nvim_create_user_command("TabwidthBuf", function(options)
+        local argc = #options.fargs
+
+        local buf = vim.api.nvim_get_current_buf()
+
+        if argc == 0 then
+            TabwidthAPI.print_buffer(buf)
+            return
+        end
+
+        if argc > 1 then
+            vim.notify("Invalid usage. Expects :TabwidthBuf <width?>", vim.log.levels.ERROR)
+            return
+        end
+
+        local width = TabwidthAPI.sanitize_width(tonumber(options.fargs[1]))
+
+        if not width then
+            vim.notify("Invalid usage. Expects <width> to be a positive integer", vim.log.levels.ERROR)
+            return
+        end
+
+        TabwidthAPI.set_buffer(buf, TabwidthAPI.width_to_cfg(width))
+    end, {
+        nargs = "*",
+        desc = "Preview or set the default tabwidth of the current buffer"
     })
 end
 
