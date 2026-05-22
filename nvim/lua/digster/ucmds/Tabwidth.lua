@@ -12,7 +12,7 @@
 ---@field softtabstop? integer
 
 ---@class TabwidthOpts
----@field global? TabwidthConfig
+---@field default? TabwidthConfig
 ---@field buffer? table<number,TabwidthConfig>
 ---@field filetype? table<string, TabwidthConfig>
 
@@ -124,14 +124,14 @@ end
 
 --- Set the configured tabwidth.
 --- @param cfg TabwidthConfig
-function TabwidthAPI.set_global(cfg)
+function TabwidthAPI.set_default(cfg)
     TabwidthAPI.set_cfg(cfg, { scope = "global" })
 end
 
 --- Print the global indentation config.
-function TabwidthAPI.print_global()
+function TabwidthAPI.print_default()
     local cfg = TabwidthAPI.get_cfg({ scope = "global" })
-    TabwidthAPI.print_cfg("global: ", cfg)
+    TabwidthAPI.print_cfg("", cfg)
 end
 
 --- Set the configured tabwidth for a buffer.
@@ -177,8 +177,8 @@ end
 function TabwidthAPI.setup(opts)
     -- Configure Tabwidth options
     if opts then
-        if opts.global then
-            TabwidthAPI.set_global(opts.global)
+        if opts.default then
+            TabwidthAPI.set_default(opts.default)
         end
 
         for k, v in pairs(opts.buffer or {}) do
@@ -191,16 +191,16 @@ function TabwidthAPI.setup(opts)
     end
 
     -- Configure User command
-    vim.api.nvim_create_user_command("Tabwidth", function(options)
+    vim.api.nvim_create_user_command("TabwidthDefault", function(options)
         local argc = #options.fargs
 
         if argc == 0 then
-            TabwidthAPI.print_global()
+            TabwidthAPI.print_default()
             return
         end
 
         if argc > 1 then
-            vim.notify("Invalid usage. Expects :Tabwidth <width?>", vim.log.levels.ERROR)
+            vim.notify("Invalid usage. Expects :TabwidthDefault <width?>", vim.log.levels.ERROR)
             return
         end
 
@@ -211,7 +211,7 @@ function TabwidthAPI.setup(opts)
             return
         end
 
-        TabwidthAPI.set_global(TabwidthAPI.width_to_cfg(width))
+        TabwidthAPI.set_default(TabwidthAPI.width_to_cfg(width))
     end, {
         nargs = "*"
     })
