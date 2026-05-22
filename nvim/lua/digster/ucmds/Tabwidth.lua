@@ -196,6 +196,7 @@ function TabwidthAPI.setup(opts)
 
         if argc == 0 then
             TabwidthAPI.print_global()
+            return
         end
 
         if argc > 1 then
