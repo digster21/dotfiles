@@ -106,10 +106,11 @@ function TabwidthAPI.set_cfg(cfg, opt)
 end
 
 --- Print the configured tabwidth
+--- @param prefix string
 --- @param cfg TabwidthConfig
-function TabwidthAPI.print_cfg(cfg)
+function TabwidthAPI.print_cfg(prefix, cfg)
     if cfg.shiftwidth == cfg.tabstop and cfg.shiftwidth == cfg.softtabstop then
-        print(cfg.shiftwidth)
+        print(prefix .. cfg.shiftwidth)
         return
     end
 
@@ -118,7 +119,7 @@ function TabwidthAPI.print_cfg(cfg)
     for k, v in pairs(cfg) do
         table.insert(parts, k .. "=" .. v)
     end
-    print(table.concat(parts, ", "))
+    print(prefix .. table.concat(parts, ", "))
 end
 
 --- Set the configured tabwidth.
@@ -130,7 +131,7 @@ end
 --- Print the global indentation config.
 function TabwidthAPI.print_global()
     local cfg = TabwidthAPI.get_cfg({ scope = "global" })
-    TabwidthAPI.print_cfg(cfg)
+    TabwidthAPI.print_cfg("global: ", cfg)
 end
 
 --- Set the configured tabwidth for a filetype.
@@ -144,7 +145,7 @@ end
 --- @param ft string filetype
 function TabwidthAPI.print_filetype(ft)
     local cfg = TabwidthAPI.get_cfg({ filetype = ft })
-    TabwidthAPI.print_cfg(cfg)
+    TabwidthAPI.print_cfg(string.format("filetype (%s): ", ft), cfg)
 end
 
 --- Set the configured tabwidth for a buffer.
@@ -158,7 +159,7 @@ end
 --- @param buf integer buffer id
 function TabwidthAPI.print_local(buf)
     local cfg = TabwidthAPI.get_cfg({ buf = buf })
-    TabwidthAPI.print_cfg(cfg)
+    TabwidthAPI.print_cfg(string.format("local (%d): ", buf), cfg)
 end
 
 --- Setup Tabwidth.
