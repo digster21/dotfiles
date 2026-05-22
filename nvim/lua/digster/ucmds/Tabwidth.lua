@@ -175,10 +175,6 @@ function TabwidthAPI.setup(opts)
     vim.api.nvim_create_user_command("Tabwidth", function(options)
         local argc = #options.fargs
 
-        if argc == 0 then
-            -- TabwidthAPI.print()
-            return
-        end
 
         if argc ~= 2 then
             vim.notify("Invalid usage. Expects :Tabwidth <scope> <width>", vim.log.levels.ERROR)
