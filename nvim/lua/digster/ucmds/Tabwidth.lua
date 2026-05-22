@@ -13,7 +13,7 @@
 
 ---@class TabwidthOpts
 ---@field global? TabwidthConfig
----@field local? table<number,TabwidthConfig>
+---@field buffer? table<number,TabwidthConfig>
 ---@field filetype? table<string, TabwidthConfig>
 
 
@@ -151,15 +151,15 @@ end
 --- Set the configured tabwidth for a buffer.
 --- @param buf integer buffer id
 --- @param cfg TabwidthConfig
-function TabwidthAPI.set_local(buf, cfg)
+function TabwidthAPI.set_buffer(buf, cfg)
     TabwidthAPI.set_cfg(cfg, { buf = buf })
 end
 
 --- Print the indentation config for a buffer.
 --- @param buf integer buffer id
-function TabwidthAPI.print_local(buf)
+function TabwidthAPI.print_buffer(buf)
     local cfg = TabwidthAPI.get_cfg({ buf = buf })
-    TabwidthAPI.print_cfg(string.format("local (%d): ", buf), cfg)
+    TabwidthAPI.print_cfg(string.format("buffer (%d): ", buf), cfg)
 end
 
 --- Setup Tabwidth.
@@ -169,6 +169,14 @@ function TabwidthAPI.setup(opts)
     if opts then
         if opts.global then
             TabwidthAPI.set_global(opts.global)
+        end
+
+        for k, v in pairs(opts.buffer or {}) do
+            TabwidthAPI.set_buffer(k, v)
+        end
+
+        for k, v in pairs(opts.filetype or {}) do
+            TabwidthAPI.set_filetype(k, v)
         end
     end
 
