@@ -80,42 +80,6 @@ function TabwidthAPI.consolidate_cfg(cfg)
     return out
 end
 
---- Get the configured tabwidth
---- @param opt vim.api.keyset.option
---- @return TabwidthConfig
-function TabwidthAPI.get_cfg(opt)
-    local sw = vim.api.nvim_get_option_value("shiftwidth", opt)
-    local ts = vim.api.nvim_get_option_value("tabstop", opt)
-    local sts = vim.api.nvim_get_option_value("softtabstop", opt)
-
-    return TabwidthAPI.consolidate_cfg({
-        shiftwidth = sw,
-        tabstop = ts,
-        softtabstop = sts,
-    })
-end
-
---- Set the configured tabwidth
---- @param cfg TabwidthConfig
---- @param opt vim.api.keyset.option
-function TabwidthAPI.set_cfg(cfg, opt)
-    -- Validate config
-    local safe_cfg = TabwidthAPI.consolidate_cfg(cfg)
-
-    -- Change values if they exist
-    if safe_cfg.shiftwidth or safe_cfg.width then
-        vim.api.nvim_set_option_value("shiftwidth", safe_cfg.shiftwidth or safe_cfg.width, opt)
-    end
-
-    if safe_cfg.tabstop or safe_cfg.width then
-        vim.api.nvim_set_option_value("tabstop", safe_cfg.tabstop or safe_cfg.width, opt)
-    end
-
-    if safe_cfg.softtabstop or safe_cfg.width then
-        vim.api.nvim_set_option_value("softtabstop", safe_cfg.softtabstop or safe_cfg.width, opt)
-    end
-end
-
 --- Print the configured tabwidth
 --- @param prefix string
 --- @param cfg TabwidthConfig
@@ -133,29 +97,76 @@ function TabwidthAPI.print_cfg(prefix, cfg)
     print(prefix .. table.concat(parts, ", "))
 end
 
---- Set the configured tabwidth.
---- @param cfg TabwidthConfig
-function TabwidthAPI.set_default(cfg)
-    TabwidthAPI.set_cfg(cfg, { scope = "global" })
+--- Get the default tabwidth config.
+--- @return TabwidthConfig
+function TabwidthAPI.get_default()
+    return TabwidthAPI.consolidate_cfg({
+        shiftwidth = vim.o.shiftwidth,
+        tabstop = vim.o.tabstop,
+        softtabstop = vim.o.softtabstop,
+    })
 end
 
---- Print the global indentation config.
+--- Set the default tabwidth config.
+--- @param cfg TabwidthConfig
+function TabwidthAPI.set_default(cfg)
+    local safe_cfg = TabwidthAPI.consolidate_cfg(cfg)
+
+    -- Change values if they exist
+    if safe_cfg.shiftwidth or safe_cfg.width then
+        vim.o.shiftwidth = safe_cfg.shiftwidth or safe_cfg.width
+    end
+
+    if safe_cfg.tabstop or safe_cfg.width then
+        vim.o.tabstop = safe_cfg.tabstop or safe_cfg.width
+    end
+
+    if safe_cfg.softtabstop or safe_cfg.width then
+        vim.o.softtabstop = safe_cfg.softtabstop or safe_cfg.width
+    end
+end
+
+--- Print the default tabwidth config.
 function TabwidthAPI.print_default()
-    local cfg = TabwidthAPI.get_cfg({ scope = "global" })
+    local cfg = TabwidthAPI.get_default()
     TabwidthAPI.print_cfg("default: ", cfg)
+end
+
+--- Get the buffers tabwidth config.
+--- @param buf integer
+--- @return TabwidthConfig
+function TabwidthAPI.get_buffer(buf)
+    return TabwidthAPI.consolidate_cfg({
+        shiftwidth = vim.bo[buf].shiftwidth,
+        tabstop = vim.bo[buf].tabstop,
+        softtabstop = vim.bo[buf].softtabstop,
+    })
 end
 
 --- Set the configured tabwidth for a buffer.
 --- @param buf integer buffer id
 --- @param cfg TabwidthConfig
 function TabwidthAPI.set_buffer(buf, cfg)
-    TabwidthAPI.set_cfg(cfg, { buf = buf })
+    local safe_cfg = TabwidthAPI.consolidate_cfg(cfg)
+
+    -- Change values if they exist
+    if safe_cfg.shiftwidth or safe_cfg.width then
+        vim.bo[buf].shiftwidth = safe_cfg.shiftwidth or safe_cfg.width
+    end
+
+    if safe_cfg.tabstop or safe_cfg.width then
+        vim.bo[buf].tabstop = safe_cfg.tabstop or safe_cfg.width
+    end
+
+    if safe_cfg.softtabstop or safe_cfg.width then
+        vim.bo[buf].softtabstop = safe_cfg.softtabstop or safe_cfg.width
+    end
 end
 
 --- Print the indentation config for a buffer.
 --- @param buf integer buffer id
 function TabwidthAPI.print_buffer(buf)
-    local cfg = TabwidthAPI.get_cfg({ buf = buf })
+    local cfg = TabwidthAPI.get_buffer(buf)
     TabwidthAPI.print_cfg(string.format("buffer (%d): ", buf), cfg)
 end
 
