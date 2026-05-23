@@ -43,10 +43,10 @@ function TabwidthAPI.sanitize_width(width)
     return width
 end
 
---- Validate input config.
+--- Reduce configured options if possible.
 --- @param cfg TabwidthConfig
 --- @return TabwidthConfig
-function TabwidthAPI.sanitize_config(cfg)
+function TabwidthAPI.consolidate_cfg(cfg)
     local out = {}
 
     if cfg.width then
@@ -58,21 +58,21 @@ function TabwidthAPI.sanitize_config(cfg)
 
     if cfg.shiftwidth then
         local sw = TabwidthAPI.sanitize_width(cfg.shiftwidth)
-        if sw then
+        if sw and sw ~= cfg.width then
             out.shiftwidth = sw
         end
     end
 
     if cfg.tabstop then
         local ts = TabwidthAPI.sanitize_width(cfg.tabstop)
-        if ts then
+        if ts and ts ~= cfg.width then
             out.tabstop = ts
         end
     end
 
     if cfg.softtabstop then
         local sts = TabwidthAPI.sanitize_width(cfg.softtabstop)
-        if sts then
+        if sts and sts ~= cfg.width then
             out.softtabstop = sts
         end
     end
@@ -84,13 +84,15 @@ end
 --- @param opt vim.api.keyset.option
 --- @return TabwidthConfig
 function TabwidthAPI.get_cfg(opt)
-    local cfg = {
-        shiftwidth = vim.api.nvim_get_option_value("shiftwidth", opt),
-        tabstop = vim.api.nvim_get_option_value("tabstop", opt),
-        softtabstop = vim.api.nvim_get_option_value("softtabstop", opt),
-    }
+    local sw = vim.api.nvim_get_option_value("shiftwidth", opt)
+    local ts = vim.api.nvim_get_option_value("tabstop", opt)
+    local sts = vim.api.nvim_get_option_value("softtabstop", opt)
 
-    return cfg
+    return TabwidthAPI.consolidate_cfg({
+        shiftwidth = sw,
+        tabstop = ts,
+        softtabstop = sts,
+    })
 end
 
 --- Set the configured tabwidth
@@ -98,7 +100,7 @@ end
 --- @param opt vim.api.keyset.option
 function TabwidthAPI.set_cfg(cfg, opt)
     -- Validate config
-    local safe_cfg = TabwidthAPI.sanitize_config(cfg)
+    local safe_cfg = TabwidthAPI.consolidate_cfg(cfg)
 
     -- Change values if they exist
     if safe_cfg.shiftwidth or safe_cfg.width then
@@ -237,6 +239,8 @@ function TabwidthAPI.setup(opts)
             vim.notify("Invalid usage. Expects <width> to be a positive integer", vim.log.levels.ERROR)
             return
         end
+
+
 
         TabwidthAPI.set_buffer(buf, { width = width })
     end, {
