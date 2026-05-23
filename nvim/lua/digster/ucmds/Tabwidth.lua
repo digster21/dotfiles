@@ -7,15 +7,15 @@
 -- ============================================================================
 
 ---@class TabwidthConfig
----@field shiftwidth? integer
----@field tabstop? integer
----@field softtabstop? integer
+---@field width? integer Default value of shiftwidth, tabstop, and softtabstop.
+---@field shiftwidth? integer Override width with custom shiftwidth
+---@field tabstop? integer Override width with custom tabstop
+---@field softtabstop? integer Override width with custom tabstop
 
 ---@class TabwidthOpts
 ---@field default? TabwidthConfig
 ---@field buffer? table<number,TabwidthConfig>
 ---@field filetype? table<string, TabwidthConfig>
-
 
 -- ============================================================================
 -- Global State
@@ -49,6 +49,20 @@ end
 function TabwidthAPI.sanitize_config(cfg)
     local out = {}
 
+    if cfg.width then
+        local w = TabwidthAPI.sanitize_width(cfg.width)
+        if w then
+            out.width = w
+        end
+    end
+
+    if cfg.shiftwidth then
+        local sw = TabwidthAPI.sanitize_width(cfg.shiftwidth)
+        if sw then
+            out.shiftwidth = sw
+        end
+    end
+
     if cfg.tabstop then
         local ts = TabwidthAPI.sanitize_width(cfg.tabstop)
         if ts then
@@ -63,13 +77,6 @@ function TabwidthAPI.sanitize_config(cfg)
         end
     end
 
-    if cfg.shiftwidth then
-        local sw = TabwidthAPI.sanitize_width(cfg.shiftwidth)
-        if sw then
-            out.shiftwidth = sw
-        end
-    end
-
     return out
 end
 
@@ -77,11 +84,13 @@ end
 --- @param opt vim.api.keyset.option
 --- @return TabwidthConfig
 function TabwidthAPI.get_cfg(opt)
-    return {
+    local cfg = {
         shiftwidth = vim.api.nvim_get_option_value("shiftwidth", opt),
         tabstop = vim.api.nvim_get_option_value("tabstop", opt),
         softtabstop = vim.api.nvim_get_option_value("softtabstop", opt),
     }
+
+    return cfg
 end
 
 --- Set the configured tabwidth
@@ -92,16 +101,16 @@ function TabwidthAPI.set_cfg(cfg, opt)
     local safe_cfg = TabwidthAPI.sanitize_config(cfg)
 
     -- Change values if they exist
-    if safe_cfg.shiftwidth then
-        vim.api.nvim_set_option_value("shiftwidth", safe_cfg.shiftwidth, opt)
+    if safe_cfg.shiftwidth or safe_cfg.width then
+        vim.api.nvim_set_option_value("shiftwidth", safe_cfg.shiftwidth or safe_cfg.width, opt)
     end
 
-    if safe_cfg.tabstop then
-        vim.api.nvim_set_option_value("tabstop", safe_cfg.tabstop, opt)
+    if safe_cfg.tabstop or safe_cfg.width then
+        vim.api.nvim_set_option_value("tabstop", safe_cfg.tabstop or safe_cfg.width, opt)
     end
 
-    if safe_cfg.softtabstop then
-        vim.api.nvim_set_option_value("softtabstop", safe_cfg.softtabstop, opt)
+    if safe_cfg.softtabstop or safe_cfg.width then
+        vim.api.nvim_set_option_value("softtabstop", safe_cfg.softtabstop or safe_cfg.width, opt)
     end
 end
 
@@ -161,17 +170,6 @@ function TabwidthAPI.print_filetype(ft)
     -- should be a wrapper around buffer with auto commands
 end
 
---- Parse command arguments
---- @param width integer
---- @return TabwidthConfig
-function TabwidthAPI.width_to_cfg(width)
-    return {
-        shiftwidth = width,
-        softtabstop = width,
-        tabstop = width,
-    }
-end
-
 --- Setup Tabwidth.
 --- @param opts TabwidthOpts
 function TabwidthAPI.setup(opts)
@@ -211,7 +209,7 @@ function TabwidthAPI.setup(opts)
             return
         end
 
-        TabwidthAPI.set_default(TabwidthAPI.width_to_cfg(width))
+        TabwidthAPI.set_default({ width = width })
     end, {
         nargs = "*",
         desc = "Preview or set the default tabwidth"
@@ -240,7 +238,7 @@ function TabwidthAPI.setup(opts)
             return
         end
 
-        TabwidthAPI.set_buffer(buf, TabwidthAPI.width_to_cfg(width))
+        TabwidthAPI.set_buffer(buf, { width = width })
     end, {
         nargs = "*",
         desc = "Preview or set the default tabwidth of the current buffer"
