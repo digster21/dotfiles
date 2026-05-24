@@ -208,6 +208,7 @@ function TabwidthAPI.setup(opts)
         -- Validate args
         if argc < 1 or argc > 2 then
             vim.notify("Invalid usage. Expects :Tabwidth <default|buffer|filetype> <width?>", vim.log.levels.ERROR)
+            return
         end
 
         local scope = options.fargs[1]
@@ -247,12 +248,19 @@ function TabwidthAPI.setup(opts)
     end, {
         nargs = "*",
         desc = "Preview or set the default tabwidth",
-        complete = function()
-            return {
-                "default",
-                "buffer",
-                "filetype",
-            }
+        complete = function(arg, line)
+            local args = vim.split(line, "%s+", { trimempty = true })
+            local argc = #args
+
+            -- Add completion for scope
+            if argc == 1 or (argc == 2 and not line:match("%s$")) then
+                local candidates = { "default", "buffer", "filetype" }
+                return vim.tbl_filter(function(c)
+                    return c:find(arg, 1, true) == 1
+                end, candidates)
+            end
+
+            return {}
         end
     })
 end
