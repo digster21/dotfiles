@@ -205,13 +205,21 @@ function TabwidthAPI.setup(opts)
     vim.api.nvim_create_user_command("Tabwidth", function(options)
         local argc = #options.fargs
 
+        -- Validate args
         if argc < 1 or argc > 2 then
             vim.notify("Invalid usage. Expects :Tabwidth <default|buffer|filetype> <width?>", vim.log.levels.ERROR)
         end
 
         local scope = options.fargs[1]
-        local buf = vim.api.nvim_get_current_buf()
 
+        if not (scope == "default" or scope == "buffer" or scope == "filetype") then
+            vim.notify(string.format("Invalid usage. Expects 'default', 'buffer', or 'filetype', got: '%s'", scope),
+                vim.log.levels.ERROR)
+            return
+        end
+
+        -- Configure tabwidth
+        local buf = vim.api.nvim_get_current_buf()
         if argc == 1 then
             if scope == "default" then
                 TabwidthAPI.print_default()
@@ -220,30 +228,21 @@ function TabwidthAPI.setup(opts)
             elseif scope == "filetype" then
                 local ft = vim.bo[buf].filetype
                 TabwidthAPI.print_filetype(ft)
-            else
-                vim.notify(string.format("Invalid usage. Expects 'default', 'buffer', or 'filetype', got: '%s'", scope),
-                    vim.log.levels.ERROR)
             end
-            return
-        end
-
-        local width = TabwidthAPI.sanitize_width(tonumber(options.fargs[2]))
-
-        if not width then
-            vim.notify("Invalid usage. Expects <width> to be a positive integer", vim.log.levels.ERROR)
-            return
-        end
-
-        if scope == "default" then
-            TabwidthAPI.set_default({ width = width })
-        elseif scope == "buffer" then
-            TabwidthAPI.set_buffer(buf, { width = width })
-        elseif scope == "filetype" then
-            local ft = vim.bo[buf].filetype
-            TabwidthAPI.set_filetype(ft, { width = width })
-        else
-            vim.notify(string.format("Invalid usage. Expects 'default', 'buffer', or 'filetype', got: '%s'", scope),
-                vim.log.levels.ERROR)
+        elseif argc == 2 then
+            local width = TabwidthAPI.sanitize_width(tonumber(options.fargs[2]))
+            if not width then
+                vim.notify("Invalid usage. Expects <width> to be a positive integer", vim.log.levels.ERROR)
+                return
+            end
+            if scope == "default" then
+                TabwidthAPI.set_default({ width = width })
+            elseif scope == "buffer" then
+                TabwidthAPI.set_buffer(buf, { width = width })
+            elseif scope == "filetype" then
+                local ft = vim.bo[buf].filetype
+                TabwidthAPI.set_filetype(ft, { width = width })
+            end
         end
     end, {
         nargs = "*",
