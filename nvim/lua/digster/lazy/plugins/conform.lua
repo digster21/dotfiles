@@ -5,6 +5,10 @@ return {
             python = { "black" },
             markdown = { "prettier" },
             sh = { "beautysh" },
+            javascript = { "prettier" },
+            typescript = { "prettier" },
+            typescriptreact = { "prettier" },
+            javascriptreact = { "prettier" },
         },
     },
 }

@@ -30,6 +30,7 @@ return {
                     "black",
                     "prettier",
                     "beautysh",
+                    "autopep8",
                 },
                 automatic_installation = true,
             })
