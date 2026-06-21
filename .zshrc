@@ -77,14 +77,6 @@ if [ ! -d "$PLUG_DIR_AUTOSUGGEST" ]; then
 fi
 plugins+=(zsh-autosuggestions)
 
-if ! uname -r | grep -qiE "microsoft|wsl"; then
-    PLUG_DIR_SYNTAXHI="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
-    if [ ! -d "$PLUG_DIR_SYNTAXHI" ]; then
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$PLUG_DIR_SYNTAXHI"
-    fi
-    plugins+=(zsh-syntax-highlighting)
-fi
-
 PLUG_DIR_YOUSHOULDUSE="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/you-should-use"
 if [ ! -d "$PLUG_DIR_YOUSHOULDUSE" ]; then
     git clone https://github.com/MichaelAquilina/zsh-you-should-use.git "$PLUG_DIR_YOUSHOULDUSE"
@@ -108,6 +100,15 @@ if ! command -v pyenv >/dev/null 2>&1; then
     eval "$(pyenv init -)"
 fi
 plugins+=(pyenv)
+
+# define highlighting last
+if ! uname -r | grep -qiE "microsoft|wsl"; then
+    PLUG_DIR_SYNTAXHI="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+    if [ ! -d "$PLUG_DIR_SYNTAXHI" ]; then
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$PLUG_DIR_SYNTAXHI"
+    fi
+    plugins+=(zsh-syntax-highlighting)
+fi
 
 source $ZSH/oh-my-zsh.sh
 
@@ -141,7 +142,26 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 bindkey '^ ' autosuggest-accept
-bindkey '^x' autosuggest-clear
+bindkey '^Xs' autosuggest-toggle
+
+if (( ${+ZSH_HIGHLIGHT_HIGHLIGHTERS} )); then
+    typeset -ga _zsh_hl_saved
+    _zsh_hl_saved=("${ZSH_HIGHLIGHT_HIGHLIGHTERS[@]}")
+
+    zsh_hl_toggle() {
+        if (( ${#ZSH_HIGHLIGHT_HIGHLIGHTERS[@]} )); then
+            _zsh_hl_saved=("${ZSH_HIGHLIGHT_HIGHLIGHTERS[@]}")
+            ZSH_HIGHLIGHT_HIGHLIGHTERS=()
+        else
+            (( ${#_zsh_hl_saved[@]} )) || _zsh_hl_saved=(main)
+            ZSH_HIGHLIGHT_HIGHLIGHTERS=("${_zsh_hl_saved[@]}")
+        fi
+        zle reset-prompt
+    }
+    zle -N zsh_hl_toggle
+    bindkey '^xh' zsh_hl_toggle
+fi
+
 
 # Bash aliases
 [ -f "${HOME}/.bash_aliases" ] && . "${HOME}/.bash_aliases"
