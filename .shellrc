@@ -68,15 +68,24 @@ if [ -n "$ZSH_VERSION" ]; then
 fi
 
 # NVM bootstrap
-NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "$HOME/.nvm" || printf %s "$XDG_CONFIG_HOME/nvm")"
-if [ ! -d "$NVM_DIR" ] || [ -z "$(ls -A "$NVM_DIR" 2>/dev/null)" ]; then
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-fi
-export NVM_DIR="$NVM_DIR"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-if ! nvm version 'lts/*' >/dev/null 2>&1; then
-    nvm install --lts
-    nvm alias default 'lts/*'
-fi
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "$HOME/.nvm" || printf %s "$XDG_CONFIG_HOME/nvm")"
+
+load_nvm() {
+    unset -f nvm
+
+    if [ ! -d "$NVM_DIR" ] || [ -z "$(ls -A "$NVM_DIR" 2>/dev/null)" ]; then
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+    fi
+
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+    if ! nvm version 'lts/*' >/dev/null 2>&1; then
+        nvm install --lts
+        nvm alias default 'lts/*'
+    fi
+}
+
+nvm() { load_nvm; nvm "$@"; }
 
 add_PATH "$HOME/bin"
