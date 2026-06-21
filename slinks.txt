@@ -8,3 +8,4 @@ zk:$HOME/.config/zk
 .shellrc:$HOME/.shellrc
 scripts/ram-usage.sh:$HOME/bin/ram-usage
 scripts/batt_status.sh:$HOME/bin/batt_status
+scripts/combine-pdf.py:$HOME/bin/combine-pdf
