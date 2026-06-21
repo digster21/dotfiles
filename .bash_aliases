@@ -7,7 +7,7 @@ alias nrfusearch='nrfutil sdk-manager search'
 alias nrfulist='nrfutil sdk-manager list'
 alias nrfuinstall='nrfutil sdk-manager install'
 alias nrfuuninstall='nrfutil sdk-manager uninstall'
-alias nrfushell='_nrf_shell() { nrfutil sdk-manager toolchain launch --ncs-version "$1" --shell; }; _nrf_shell'
+nrfushell() { nrfutil sdk-manager toolchain launch --ncs-version "$1" --shell; };
 
 alias ccb='xclip -selection clipbaord'
 
