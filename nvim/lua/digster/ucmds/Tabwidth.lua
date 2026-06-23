@@ -23,6 +23,16 @@
 
 local TabwidthAPI = {}
 
+---@class TabwidthState
+---@field default? TabwidthConfig
+---@field buffers table<integer, TabwidthConfig>
+---@field filetypes table<string, TabwidthConfig>
+local state = {
+    default = nil,
+    buffers = {},
+    filetypes = {},
+}
+
 -- ============================================================================
 -- Functions
 -- ============================================================================
@@ -84,12 +94,6 @@ end
 --- @param prefix string
 --- @param cfg TabwidthConfig
 function TabwidthAPI.print_cfg(prefix, cfg)
-    if cfg.shiftwidth == cfg.tabstop and cfg.shiftwidth == cfg.softtabstop then
-        print(prefix .. cfg.shiftwidth)
-        return
-    end
-
-    -- Fallback to printing entire config obj
     local parts = {}
     for k, v in pairs(cfg) do
         table.insert(parts, k .. "=" .. v)
@@ -97,42 +101,42 @@ function TabwidthAPI.print_cfg(prefix, cfg)
     print(prefix .. table.concat(parts, ", "))
 end
 
---- Get the default tabwidth config.
---- @return TabwidthConfig
-function TabwidthAPI.get_default()
-    return TabwidthAPI.consolidate_cfg({
-        shiftwidth = vim.o.shiftwidth,
-        tabstop = vim.o.tabstop,
-        softtabstop = vim.o.softtabstop,
-    })
+--- Resolve the effective config for a buffer using priority:
+--- buffer > filetype > default
+--- @param buf integer buffer id
+--- @return TabwidthConfig?
+function TabwidthAPI.resolve(buf)
+    local ft = vim.bo[buf].filetype
+    return state.buffers[buf]
+        or state.filetypes[ft]
+        or state.default
+        or nil
 end
 
---- Set the default tabwidth config.
---- @param cfg TabwidthConfig
-function TabwidthAPI.set_default(cfg)
-    local safe_cfg = TabwidthAPI.consolidate_cfg(cfg)
-
-    -- Change values if they exist
-    if safe_cfg.shiftwidth or safe_cfg.width then
-        vim.o.shiftwidth = safe_cfg.shiftwidth or safe_cfg.width
+--- Apply the resolved tabwidth config to a buffer.
+--- @param buf integer buffer id
+function TabwidthAPI.apply(buf)
+    local cfg = TabwidthAPI.resolve(buf)
+    if not cfg then
+        return
     end
 
-    if safe_cfg.tabstop or safe_cfg.width then
-        vim.o.tabstop = safe_cfg.tabstop or safe_cfg.width
-    end
+    local sw = cfg.shiftwidth or cfg.width
+    local ts = cfg.tabstop or cfg.width
+    local sts = cfg.softtabstop or cfg.width
 
-    if safe_cfg.softtabstop or safe_cfg.width then
-        vim.o.softtabstop = safe_cfg.softtabstop or safe_cfg.width
+    if sw then
+        vim.bo[buf].shiftwidth = sw
+    end
+    if ts then
+        vim.bo[buf].tabstop = ts
+    end
+    if sts then
+        vim.bo[buf].softtabstop = sts
     end
 end
 
---- Print the default tabwidth config.
-function TabwidthAPI.print_default()
-    local cfg = TabwidthAPI.get_default()
-    TabwidthAPI.print_cfg("default: ", cfg)
-end
-
---- Get the buffers tabwidth config.
+--- Get the effective tabwidth config for a buffer.
 --- @param buf integer
 --- @return TabwidthConfig
 function TabwidthAPI.get_buffer(buf)
@@ -143,44 +147,103 @@ function TabwidthAPI.get_buffer(buf)
     })
 end
 
+--- Get the default tabwidth config.
+--- @return TabwidthConfig
+function TabwidthAPI.get_default()
+    return state.default or TabwidthAPI.consolidate_cfg({
+        shiftwidth = vim.o.shiftwidth,
+        tabstop = vim.o.tabstop,
+        softtabstop = vim.o.softtabstop,
+    })
+end
+
+--- Set the default tabwidth config and propagate to non-overridden buffers.
+--- @param cfg TabwidthConfig
+function TabwidthAPI.set_default(cfg)
+    state.default = TabwidthAPI.consolidate_cfg(cfg)
+
+    -- Propagate to buffers without explicit overrides
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) then
+            local ft = vim.bo[buf].filetype
+            if not state.buffers[buf] and not state.filetypes[ft] then
+                TabwidthAPI.apply(buf)
+            end
+        end
+    end
+end
+
+--- Print the default tabwidth config.
+function TabwidthAPI.print_default()
+    local cfg = TabwidthAPI.get_default()
+    TabwidthAPI.print_cfg("default: ", cfg)
+end
+
 --- Set the configured tabwidth for a buffer.
 --- @param buf integer buffer id
 --- @param cfg TabwidthConfig
 function TabwidthAPI.set_buffer(buf, cfg)
-    local safe_cfg = TabwidthAPI.consolidate_cfg(cfg)
+    state.buffers[buf] = TabwidthAPI.consolidate_cfg(cfg)
+    TabwidthAPI.apply(buf)
+end
 
-    -- Change values if they exist
-    if safe_cfg.shiftwidth or safe_cfg.width then
-        vim.bo[buf].shiftwidth = safe_cfg.shiftwidth or safe_cfg.width
-    end
-
-    if safe_cfg.tabstop or safe_cfg.width then
-        vim.bo[buf].tabstop = safe_cfg.tabstop or safe_cfg.width
-    end
-
-    if safe_cfg.softtabstop or safe_cfg.width then
-        vim.bo[buf].softtabstop = safe_cfg.softtabstop or safe_cfg.width
-    end
+--- Clear the explicit buffer override and reapply inherited config.
+--- @param buf integer buffer id
+function TabwidthAPI.clear_buffer(buf)
+    state.buffers[buf] = nil
+    TabwidthAPI.apply(buf)
 end
 
 --- Print the indentation config for a buffer.
 --- @param buf integer buffer id
 function TabwidthAPI.print_buffer(buf)
     local cfg = TabwidthAPI.get_buffer(buf)
-    TabwidthAPI.print_cfg(string.format("buffer (%d): ", buf), cfg)
+    local source = state.buffers[buf] and "buffer (explicit)"
+        or state.filetypes[vim.bo[buf].filetype] and "buffer (filetype)"
+        or state.default and "buffer (default)"
+        or "buffer (vim)"
+    TabwidthAPI.print_cfg(string.format("%s [%d]: ", source, buf), cfg)
 end
 
---- Set the configured tabwidth for a filetype.
+--- Set the configured tabwidth for a filetype and apply to matching buffers.
 --- @param ft string filetype
 --- @param cfg TabwidthConfig
 function TabwidthAPI.set_filetype(ft, cfg)
-    -- should be a wrapper around buffer with auto commands
+    state.filetypes[ft] = TabwidthAPI.consolidate_cfg(cfg)
+
+    -- Apply to all loaded buffers with this filetype
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].filetype == ft then
+            if not state.buffers[buf] then
+                TabwidthAPI.apply(buf)
+            end
+        end
+    end
+end
+
+--- Clear the explicit filetype override and reapply inherited config.
+--- @param ft string filetype
+function TabwidthAPI.clear_filetype(ft)
+    state.filetypes[ft] = nil
+
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].filetype == ft then
+            if not state.buffers[buf] then
+                TabwidthAPI.apply(buf)
+            end
+        end
+    end
 end
 
 --- Print the indentation config for a filetype.
 --- @param ft string filetype
 function TabwidthAPI.print_filetype(ft)
-    -- should be a wrapper around buffer with auto commands
+    local cfg = state.filetypes[ft]
+    if cfg then
+        TabwidthAPI.print_cfg(string.format("filetype (%s): ", ft), cfg)
+    else
+        print(string.format("filetype (%s): no override", ft))
+    end
 end
 
 --- Setup Tabwidth.
@@ -200,6 +263,27 @@ function TabwidthAPI.setup(opts)
             TabwidthAPI.set_filetype(k, v)
         end
     end
+
+    vim.api.nvim_create_augroup("Tabwidth", { clear = true })
+
+    -- Apply config when filetype is detected or changed
+    vim.api.nvim_create_autocmd("FileType", {
+        group = "Tabwidth",
+        callback = function(ev)
+            -- Only apply if buffer has no explicit override
+            if not state.buffers[ev.buf] then
+                TabwidthAPI.apply(ev.buf)
+            end
+        end,
+    })
+
+    -- Clean up buffer state on delete
+    vim.api.nvim_create_autocmd("BufDelete", {
+        group = "Tabwidth",
+        callback = function(ev)
+            state.buffers[ev.buf] = nil
+        end,
+    })
 
     -- Configure User command
     vim.api.nvim_create_user_command("Tabwidth", function(options)
