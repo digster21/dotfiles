@@ -1,2 +1,6 @@
 -- Import commands
-require("digster.ucmds.Tabwidth").setup({ width = 4 })
+require("digster.ucmds.Tabwidth").setup({
+    default = {
+        width = 4,
+    },
+})
