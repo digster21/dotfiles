@@ -17,6 +17,7 @@ require("lazy").setup({
     { import = "digster.lazy.plugins.cmp" },
     { import = "digster.lazy.plugins.conform" },
     { import = "digster.lazy.plugins.sensible" },
+    { import = "digster.lazy.plugins.surround" },
     { import = "digster.lazy.plugins.autopairs" },
     { import = "digster.lazy.plugins.gitsigns" },
     { import = "digster.lazy.plugins.indent" },
