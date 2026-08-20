@@ -39,5 +39,3 @@ git switch "$original_branch" >/dev/null 2>&1 || {
     echo "error: switch back to '$original_branch' failed" >&2
     exit 1
 }
-
-echo "Done. Returned to '$original_branch'"
