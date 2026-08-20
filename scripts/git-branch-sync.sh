@@ -15,9 +15,13 @@ if [[ -n "$(git status --porcelain)" ]]; then
 fi
 
 branches="$(git for-each-ref --format='%(refname:short)' refs/heads)"
+total="$(git for-each-ref --format='%(refname:short)' refs/heads | wc -l | tr -d '[:space:]')"
 
+i=0
 while IFS= read -r branch; do
     [[ -z "$branch" ]] && continue
+    i=$((i + 1))
+    echo "syncing ($i/$total): '$branch'"
 
     git switch "$branch" >/dev/null 2>&1 || {
         echo "error: switch to '$branch' failed" >&2
