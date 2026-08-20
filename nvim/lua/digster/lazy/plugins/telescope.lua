@@ -71,6 +71,9 @@ return {
         utils.keymap_set("n", "<leader>0", ":Telescope colorscheme<CR>", { desc = "Change look using picker" })
 
         ts.setup({
+            defaults = {
+                path_display = { "filename_first" },
+            },
             extensions = {
                 ["ui-select"] = {
                     ts_theme.get_dropdown()
