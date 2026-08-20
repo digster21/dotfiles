@@ -31,6 +31,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     callback = function()
         utils.keymap_set("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename symbol" })
         utils.keymap_set("n", "<leader>h", vim.lsp.buf.hover, { desc = "Hover docs" })
+        utils.keymap_set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Open code actions" })
     end,
 })
 

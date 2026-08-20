@@ -9,7 +9,7 @@ utils.keymap_set("v", "qq", "<ESC>", { desc = "Escape visual mode" })
 utils.keymap_set("t", "qq", "<C-\\><C-n>", { desc = "Escape terminal insert mode" })
 utils.keymap_set("n", "x", '"_x', { desc = "Delete single character without copying" })
 
-utils.keymap_set("n", "<leader>c", ":nohl<CR>", { desc = "Clear search highlights" })
+utils.keymap_set("n", "<leader>ch", ":nohl<CR>", { desc = "Clear search highlights" })
 utils.keymap_set(
     'n',
     '<leader>%',
