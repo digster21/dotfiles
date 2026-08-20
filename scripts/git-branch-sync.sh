@@ -21,7 +21,7 @@ i=0
 while IFS= read -r branch; do
     [[ -z "$branch" ]] && continue
     i=$((i + 1))
-    echo "syncing ($i/$total): '$branch'"
+    echo "($i/$total) syncing '$branch'"
 
     git switch "$branch" >/dev/null 2>&1 || {
         echo "error: switch to '$branch' failed" >&2
@@ -40,4 +40,4 @@ git switch "$original_branch" >/dev/null 2>&1 || {
     exit 1
 }
 
-echo "synced; back on '$original_branch'"
+echo "Done. Returned to '$original_branch'"
