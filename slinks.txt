@@ -9,3 +9,4 @@ zk:$HOME/.config/zk
 scripts/ram-usage.sh:$HOME/bin/ram-usage
 scripts/batt_status.sh:$HOME/bin/batt_status
 scripts/combine-pdf.py:$HOME/bin/combine-pdf
+scripts/git-pull-all.sh:$HOME/bin/git-pull-all
