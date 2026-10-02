@@ -24,7 +24,6 @@ require("lazy").setup({
     { import = "digster.lazy.plugins.comment" },
     { import = "digster.lazy.plugins.grugfar" },
     { import = "digster.lazy.plugins.markdown-preview" },
-    { import = "digster.lazy.plugins.copilotchat" },
     { import = "digster.lazy.themes.tokyonight" },
     { import = "digster.lazy.themes.kanagawa" },
 })
