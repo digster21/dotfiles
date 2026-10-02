@@ -61,15 +61,15 @@ return {
         config = function()
             local ts_to = require("nvim-treesitter-textobjects.move")
 
-            utils.keymap_set({ "n", "x", "o" }, "]m", function()
+            utils.keymap_set({ "n", "x", "o" }, "]M", function()
                 local ok, err = pcall(function()
-                    ts_to.goto_next_start("@function.outer", "textobjects")
+                    ts_to.goto_previous_end("@function.outer", "textobjects")
                 end)
-
                 if not ok then
                     print(tostring(err))
                 end
-            end, { desc = "Go to next function start" })
+            end, { desc = "Go to prev function end" })
+
 
             utils.keymap_set({ "n", "x", "o" }, "[m", function()
                 local ok, err = pcall(function()
@@ -80,7 +80,7 @@ return {
                 end
             end, { desc = "Go to prev function start" })
 
-            utils.keymap_set({ "n", "x", "o" }, "]M", function()
+            utils.keymap_set({ "n", "x", "o" }, "]m", function()
                 local ok, err = pcall(function()
                     ts_to.goto_next_end("@function.outer", "textobjects")
                 end)
@@ -89,14 +89,16 @@ return {
                 end
             end, { desc = "Go to next function end" })
 
+
             utils.keymap_set({ "n", "x", "o" }, "[M", function()
                 local ok, err = pcall(function()
-                    ts_to.goto_previous_end("@function.outer", "textobjects")
+                    ts_to.goto_next_start("@function.outer", "textobjects")
                 end)
+
                 if not ok then
                     print(tostring(err))
                 end
-            end, { desc = "Go to prev function end" })
+            end, { desc = "Go to next function start" })
         end,
     },
 }
