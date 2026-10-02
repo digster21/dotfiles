@@ -3,13 +3,15 @@ local utils = require("digster.utils")
 return {
     {
         "nvim-treesitter/nvim-treesitter",
-        branch = "master",
+        branch = "main",
+        lazy = false,
         build = ":TSUpdate",
-        event = { "BufReadPre", "BufNewFile" },
-        opts = {
-            highlight = { enable = true },
-            indent = { enable = true },
-            ensure_installed = {
+        opts = {},
+        config = function(_, opts)
+            local ts = require("nvim-treesitter")
+            ts.setup()
+
+            ts.install({
                 "bash",
                 "c",
                 "cpp",
@@ -19,7 +21,6 @@ return {
                 "javascript",
                 "jsdoc",
                 "json",
-                "jsonc",
                 "lua",
                 "luadoc",
                 "luap",
@@ -38,20 +39,16 @@ return {
                 "xml",
                 "yaml",
                 "csv",
-            },
-        },
-        config = function(_, opts)
-            require("nvim-treesitter").setup(opts)
+            })
 
-            -- Kickstart language highlighting
-            vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-                pattern = "*",
-                callback = function()
-                    local buf = vim.api.nvim_get_current_buf()
-                    if not vim.treesitter.highlighter.active[buf] then
-                        pcall(vim.treesitter.start, buf)
+            -- Kickstart highlighting
+            vim.api.nvim_create_autocmd("FileType", {
+                group = vim.api.nvim_create_augroup("digster.treesitter", { clear = true }),
+                callback = function(args)
+                    if pcall(vim.treesitter.start, args.buf) then
+                        vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                     end
-                end
+                end,
             })
         end
     },
