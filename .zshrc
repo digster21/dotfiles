@@ -83,23 +83,7 @@ if [ ! -d "$PLUG_DIR_YOUSHOULDUSE" ]; then
 fi
 plugins+=(you-should-use)
 
-if ! command -v pyenv >/dev/null 2>&1; then
-    PYENV_ROOT="$HOME/.pyenv"
-    export PYENV_ROOT
-    if [ ! -d "$PYENV_ROOT" ]; then
-        git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
-    fi
-
-    PYENV_PLUG_DIR_VENV="$PYENV_ROOT/plugins/pyenv-virtualenv"
-    if [ ! -d "$PYENV_PLUG_DIR_VENV" ]; then
-        git clone "https://github.com/pyenv/pyenv-virtualenv.git" "$PYENV_PLUG_DIR_VENV"
-    fi
-
-    [[ -d $PYENV_ROOT/bin ]] && add_PATH "$PYENV_ROOT/bin"
-    eval "$(pyenv init --path)"
-    eval "$(pyenv init -)"
-fi
-plugins+=(pyenv)
+plugins+=(uv)
 
 # define highlighting last
 if ! uname -r | grep -qiE "microsoft|wsl"; then

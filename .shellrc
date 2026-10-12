@@ -83,3 +83,4 @@ if ! nvm version 'lts/*' >/dev/null 2>&1; then
 fi
 
 add_PATH "$HOME/bin"
+add_PATH "$HOME/.local/bin"
