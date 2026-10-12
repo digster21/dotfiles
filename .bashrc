@@ -107,5 +107,10 @@ if ! shopt -oq posix; then
     fi
 fi
 
+if command -v uv >/dev/null 2>&1; then
+    eval "$(uv generate-shell-completion bash)"
+    eval "$(uvx --generate-shell-completion bash)"
+fi
+
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
