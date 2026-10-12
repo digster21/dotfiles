@@ -84,6 +84,7 @@ fi
 plugins+=(you-should-use)
 
 plugins+=(uv)
+plugins+=(fnm)
 
 # define highlighting last
 if ! uname -r | grep -qiE "microsoft|wsl"; then

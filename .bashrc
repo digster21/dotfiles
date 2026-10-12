@@ -112,5 +112,9 @@ if command -v uv >/dev/null 2>&1; then
     eval "$(uvx --generate-shell-completion bash)"
 fi
 
+if command -v fnm >/dev/null 2>&1; then
+    eval "$(fnm completions --shell bash)"
+fi
+
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

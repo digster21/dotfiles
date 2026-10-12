@@ -67,19 +67,24 @@ if [ -n "$ZSH_VERSION" ]; then
     setopt APPEND_HISTORY
 fi
 
-# NVM bootstrap
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "$HOME/.nvm" || printf %s "$XDG_CONFIG_HOME/nvm")"
+# Node provider: fnm
+FNM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/fnm"
 
-if [ ! -d "$NVM_DIR" ] || [ -z "$(ls -A "$NVM_DIR" 2>/dev/null)" ]; then
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+if ! command -v fnm >/dev/null 2>&1 && [ ! -x "$FNM_DIR/fnm" ]; then
+    curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$FNM_DIR" --skip-shell
 fi
 
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+[ -x "$FNM_DIR/fnm" ] && add_PATH "$FNM_DIR"
 
-if ! nvm version 'lts/*' >/dev/null 2>&1; then
-    nvm install --lts
-    nvm alias default 'lts/*'
+if command -v fnm >/dev/null 2>&1; then
+    if [ -n "$ZSH_VERSION" ]; then _fnm_shell=zsh; else _fnm_shell=bash; fi
+    eval "$(fnm env --use-on-cd --version-file-strategy=recursive --corepack-enabled --shell "$_fnm_shell")"
+    unset _fnm_shell
+
+    if ! fnm list 2>/dev/null | grep -q default; then
+        fnm install --lts
+        fnm default lts-latest
+    fi
 fi
 
 add_PATH "$HOME/bin"
