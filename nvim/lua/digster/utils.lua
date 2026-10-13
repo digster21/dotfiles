@@ -46,7 +46,7 @@ function utils.resolve_path_from_name_in_dir(filename, dirpath, max_depth)
     local function search(dir, current_depth)
         if current_depth > max_depth then return nil end
 
-        local fd = vim.loop.fs_scandir(dir)
+        local fd = vim.uv.fs_scandir(dir)
         if not fd then return nil end
 
         while true do
