@@ -9,23 +9,12 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    { import = "digster.lazy.plugins.mason" },
-    { import = "digster.lazy.plugins.lualine" },
-    { import = "digster.lazy.plugins.treesitter" },
-    { import = "digster.lazy.plugins.telescope" },
-    { import = "digster.lazy.plugins.neotree" },
-    { import = "digster.lazy.plugins.cmp" },
-    { import = "digster.lazy.plugins.conform" },
-    { import = "digster.lazy.plugins.sensible" },
-    { import = "digster.lazy.plugins.surround" },
-    { import = "digster.lazy.plugins.autopairs" },
-    { import = "digster.lazy.plugins.gitsigns" },
-    { import = "digster.lazy.plugins.indent" },
-    { import = "digster.lazy.plugins.comment" },
-    { import = "digster.lazy.plugins.grugfar" },
-    { import = "digster.lazy.plugins.markdown-preview" },
-    { import = "digster.lazy.themes.tokyonight" },
-    { import = "digster.lazy.themes.kanagawa" },
+    { import = "digster.lazy.plugins" },
+    { import = "digster.lazy.themes" },
+}, {
+    change_detection = {
+        notify = false,
+    },
 })
 
 vim.cmd.colorscheme("kanagawa")
