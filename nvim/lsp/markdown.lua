@@ -1,6 +1,4 @@
-vim.lsp.config.markdown = {
+return {
     cmd = { "marksman", "server" },
     filetypes = { "markdown" },
 }
-
-vim.lsp.enable("markdown")

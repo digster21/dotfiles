@@ -1,12 +1,48 @@
--- Global LSP configurations
-require("digster.lsp.config")
+local utils = require("digster.utils")
 
--- Language specific configuration/support
-require("digster.lsp.lang.lua")
-require("digster.lsp.lang.bash")
-require("digster.lsp.lang.clangd")
-require("digster.lsp.lang.json")
-require("digster.lsp.lang.python")
-require("digster.lsp.lang.markdown")
-require("digster.lsp.lang.typescript")
-require("digster.lsp.lang.eslint")
+vim.diagnostic.config({
+    virtual_text = { current_line = true },
+    underline = true,
+    update_in_insert = true,
+    severity_sort = true,
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN] = "",
+            [vim.diagnostic.severity.INFO] = "",
+            [vim.diagnostic.severity.HINT] = "",
+        },
+    },
+    float = {
+        border = "rounded",
+        source = "if_many",
+    },
+})
+
+utils.keymap_set("n", "<leader>v", function()
+    require("conform").format({
+        bufnr = vim.api.nvim_get_current_buf(),
+        async = true,
+    })
+end, { desc = "Format buffer" })
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("digster.lsp", { clear = true }),
+    callback = function()
+        utils.keymap_set("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename symbol" })
+        utils.keymap_set("n", "<leader>h", vim.lsp.buf.hover, { desc = "Hover docs" })
+        utils.keymap_set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Open code actions" })
+    end,
+})
+
+vim.lsp.config("*", {
+    capabilities = require("cmp_nvim_lsp").default_capabilities(),
+})
+
+local servers = {}
+for name, type in vim.fs.dir(vim.fn.stdpath("config") .. "/lsp") do
+    if type == "file" and name:match("%.lua$") then
+        table.insert(servers, name:sub(1, -5))
+    end
+end
+vim.lsp.enable(servers)
