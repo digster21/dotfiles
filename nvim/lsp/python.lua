@@ -1,4 +1,4 @@
-vim.lsp.config.python = {
+return {
     cmd = { "pyright-langserver", "--stdio" },
     root_markers = { "pyproject.toml", ".python-version", ".git" },
     filetypes = { "python" },
@@ -12,5 +12,3 @@ vim.lsp.config.python = {
         }
     }
 }
-
-vim.lsp.enable("python")

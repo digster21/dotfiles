@@ -8,7 +8,7 @@ local inlayHints = {
     includeInlayEnumMemberValueHints = true,
 }
 
-vim.lsp.config.ts_ls = {
+return {
     cmd = { "typescript-language-server", "--stdio" },
     filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
     settings = {
@@ -16,5 +16,3 @@ vim.lsp.config.ts_ls = {
         javascript = { inlayHints = inlayHints },
     },
 }
-
-vim.lsp.enable("ts_ls")
