@@ -8,6 +8,7 @@ keymap_set("s", "qq", "<ESC>", { desc = "Escape select mode" })
 keymap_set("v", "qq", "<ESC>", { desc = "Escape visual mode" })
 keymap_set("t", "qq", "<C-\\><C-n>", { desc = "Escape terminal insert mode" })
 keymap_set("n", "x", '"_x', { desc = "Delete single character without copying" })
+keymap_set("n", "<leader>$", function() vim.o.wrap = (not vim.o.wrap) end, { desc = "Toggle wrap option" });
 
 keymap_set("n", "<leader>ch", ":nohl<CR>", { desc = "Clear search highlights" })
 keymap_set(
