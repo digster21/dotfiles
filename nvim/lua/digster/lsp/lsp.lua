@@ -1,4 +1,4 @@
-local utils = require("digster.utils")
+local keymap_set = require("digster.utils.keymap_set")
 
 vim.diagnostic.config({
     virtual_text = { current_line = true },
@@ -19,7 +19,7 @@ vim.diagnostic.config({
     },
 })
 
-utils.keymap_set("n", "<leader>v", function()
+keymap_set("n", "<leader>v", function()
     require("conform").format({
         bufnr = vim.api.nvim_get_current_buf(),
         async = true,
@@ -29,9 +29,9 @@ end, { desc = "Format buffer" })
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("digster.lsp", { clear = true }),
     callback = function()
-        utils.keymap_set("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename symbol" })
-        utils.keymap_set("n", "<leader>h", vim.lsp.buf.hover, { desc = "Hover docs" })
-        utils.keymap_set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Open code actions" })
+        keymap_set("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename symbol" })
+        keymap_set("n", "<leader>h", vim.lsp.buf.hover, { desc = "Hover docs" })
+        keymap_set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Open code actions" })
     end,
 })
 

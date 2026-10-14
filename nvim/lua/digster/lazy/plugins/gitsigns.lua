@@ -1,4 +1,5 @@
-local utils = require("digster.utils")
+local is_git_repo = require("digster.utils.is_git_repo")
+local keymap_set = require("digster.utils.keymap_set")
 
 return {
     "lewis6991/gitsigns.nvim",
@@ -26,7 +27,7 @@ return {
         },
         attach_to_untracked = true,
         on_attach = function()
-            if not utils.is_git_repo() then
+            if not is_git_repo() then
                 return
             end
 
@@ -35,27 +36,27 @@ return {
             -- using cmd in some places for easier visual mode support
 
             -- Hunk selection with motions
-            utils.keymap_set({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Git select hunk" })
+            keymap_set({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Git select hunk" })
 
             -- Navigation
-            utils.keymap_set("n", "<leader>n", function() gs.nav_hunk("next", { target = "all" }) end,
+            keymap_set("n", "<leader>n", function() gs.nav_hunk("next", { target = "all" }) end,
                 { desc = "Git goto next hunk" })
-            utils.keymap_set("n", "<leader>N", function() gs.nav_hunk("prev", { target = "all" }) end,
+            keymap_set("n", "<leader>N", function() gs.nav_hunk("prev", { target = "all" }) end,
                 { desc = "Git goto prev hunk" })
 
             -- Diffs
-            utils.keymap_set("n", "<leader>pp", function() gs.preview_hunk() end,
+            keymap_set("n", "<leader>pp", function() gs.preview_hunk() end,
                 { desc = "Git preview hunk inline" })
 
-            utils.keymap_set("n", "<leader>ph", function() gs.diffthis("HEAD") end,
+            keymap_set("n", "<leader>ph", function() gs.diffthis("HEAD") end,
                 { desc = "Git diff HEAD" })
 
-            utils.keymap_set("n", "<leader>pw", function() gs.toggle_word_diff() end,
+            keymap_set("n", "<leader>pw", function() gs.toggle_word_diff() end,
                 { desc = "Git toggle word diff" })
 
             -- Staging
-            utils.keymap_set({ "n", "v" }, "<leader>k", ":Gitsigns stage_hunk<cr>", { desc = "Git stage/unstage hunk" })
-            utils.keymap_set("n", "<leader>K", function()
+            keymap_set({ "n", "v" }, "<leader>k", ":Gitsigns stage_hunk<cr>", { desc = "Git stage/unstage hunk" })
+            keymap_set("n", "<leader>K", function()
                 local status = vim.b.gitsigns_status_dict or {}
                 if status and (status.added or 0) + (status.changed or 0) + (status.removed or 0) > 0 then
                     gs.stage_buffer()
@@ -65,8 +66,8 @@ return {
             end, { desc = "Git stage/unstage buffer" })
 
             -- Resetting
-            utils.keymap_set({ "n", "v" }, "<leader>l", function() gs.reset_hunk() end, { desc = "Git reset hunk" })
-            utils.keymap_set("n", "<leader>L", gs.reset_buffer, { desc = "Git reset buffer" })
+            keymap_set({ "n", "v" }, "<leader>l", function() gs.reset_hunk() end, { desc = "Git reset hunk" })
+            keymap_set("n", "<leader>L", gs.reset_buffer, { desc = "Git reset buffer" })
         end,
     },
 }
