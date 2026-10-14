@@ -1,7 +1,5 @@
--- LSP configuration based on https://github.com/onosendi/dotfiles
-
 -- Global LSP configurations
-require("digster.lsp.common")
+require("digster.lsp.config")
 
 -- Language specific configuration/support
 require("digster.lsp.lang.lua")
