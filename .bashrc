@@ -116,5 +116,6 @@ if command -v fnm >/dev/null 2>&1; then
     eval "$(fnm completions --shell bash)"
 fi
 
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+if command -v fzf >/dev/null 2>&1; then
+    eval "$(fzf --bash)"
+fi
