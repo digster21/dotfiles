@@ -3,37 +3,9 @@
 [ -n "$SHELLRC_GUARD" ] && return
 SHELLRC_GUARD=1
 
-add_PATH() {
-    local debug=false
-    local dry_run=false
-    local arg=""
-
-    while [ $# -gt 0 ]; do
-        case "$1" in
-            --debug) debug=true ;;
-            --dry-run)  dry_run=true; debug=true ;;
-            *)          arg="$1" ;;
-        esac
-        shift
-    done
-
-    [ -z "$arg" ] && { echo "no path arg"; return 1; }
-
-    case ":$PATH:" in
-        *":$arg:"*)
-            $debug && echo "duplicate >> $arg"
-            return 0
-            ;;
-    esac
-
-    if $dry_run; then
-        echo "PATH update (dry-run) >> $arg:$PATH"
-        return 0
-    fi
-
-    PATH="$arg:$PATH"
-    $debug && echo "PATH update >> $PATH"
-}
+if ! command -v add-path >/dev/null 2>&1; then
+    PATH="$HOME/bin:$PATH"
+fi
 
 # Add Editor preference
 if command -v nvim >/dev/null 2>&1; then
@@ -69,13 +41,10 @@ fi
 
 # Node provider: fnm
 FNM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/fnm"
-
 if ! command -v fnm >/dev/null 2>&1 && [ ! -x "$FNM_DIR/fnm" ]; then
     curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$FNM_DIR" --skip-shell
 fi
-
-[ -x "$FNM_DIR/fnm" ] && add_PATH "$FNM_DIR"
-
+PATH="$(add-path "$FNM_DIR")"
 if command -v fnm >/dev/null 2>&1; then
     if [ -n "$ZSH_VERSION" ]; then _fnm_shell=zsh; else _fnm_shell=bash; fi
     eval "$(fnm env --use-on-cd --version-file-strategy=recursive --corepack-enabled --shell "$_fnm_shell")"
@@ -87,5 +56,9 @@ if command -v fnm >/dev/null 2>&1; then
     fi
 fi
 
-add_PATH "$HOME/bin"
-add_PATH "$HOME/.local/bin"
+PATH="$(add-path        \
+    "$HOME/.local/bin"  \
+    "$HOME/.fzf/bin"    \
+)"
+
+export PATH
