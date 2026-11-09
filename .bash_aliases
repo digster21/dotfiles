@@ -14,3 +14,6 @@ alias ccb='xclip -selection clipbaord'
 alias daily="zk new --template todo.md --title 'Daily Tasks'"
 alias ntodo="zk new --template todo.md --title"
 alias nmeeting="zk new --template meeting.md --title"
+
+alias tl='task -l'
+alias t='task'
