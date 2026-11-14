@@ -3,9 +3,12 @@
 [ -n "$SHELLRC_GUARD" ] && return
 SHELLRC_GUARD=1
 
-if ! command -v add-path >/dev/null 2>&1; then
-    PATH="$HOME/bin:$PATH"
-fi
+# Add ~/bin to path so helper scripts can be found.
+BIN_HOME = "$HOME/bin"
+case ":$PATH:" in
+    *":$BIN_HOME:"*) ;;
+    *) export PATH="$BIN_HOME:$PATH" ;;
+esac
 
 # Add Editor preference
 if command -v nvim >/dev/null 2>&1; then
