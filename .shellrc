@@ -3,11 +3,10 @@
 [ -n "$SHELLRC_GUARD" ] && return
 SHELLRC_GUARD=1
 
-# Add ~/bin to path so helper scripts can be found.
-BIN_HOME = "$HOME/bin"
+# Expose helper scripts
 case ":$PATH:" in
-    *":$BIN_HOME:"*) ;;
-    *) export PATH="$BIN_HOME:$PATH" ;;
+    *":$HOME/bin:"*) ;;
+    *) PATH="$HOME/bin:$PATH" ;;
 esac
 
 # Add Editor preference
